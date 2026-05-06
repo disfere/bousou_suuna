@@ -106,6 +106,21 @@ button{
 }
 
 /* =========================
+   ターン表示
+========================= */
+
+#turnDisplay{
+
+    font-size:22px;
+    font-weight:bold;
+
+    margin-bottom:12px;
+
+    text-shadow:
+        0 0 10px black;
+}
+
+/* =========================
    HP
 ========================= */
 
@@ -157,11 +172,11 @@ button{
 
 .damageArea input{
 
-    width:120px;
+    width:140px;
 
     padding:8px;
 
-    font-size:20px;
+    font-size:18px;
     text-align:center;
 
     border:none;
@@ -169,16 +184,7 @@ button{
 }
 
 .damageArea button{
-    width:120px;
-}
-
-/* =========================
-   敵行動
-========================= */
-
-#enemyButton{
-    margin-top:0;
-    margin-bottom:10px;
+    width:140px;
 }
 
 /* =========================
@@ -190,7 +196,7 @@ button{
     font-size:28px;
     font-weight:bold;
 
-    margin-bottom:12px;
+    margin-top:10px;
 
     min-height:40px;
 
@@ -333,7 +339,7 @@ button{
 }
 
 /* =========================
-   ポップ演出
+   アニメ
 ========================= */
 
 @keyframes popup{
@@ -349,10 +355,6 @@ button{
     }
 
 }
-
-/* =========================
-   カットイン演出
-========================= */
 
 @keyframes fadeCutin{
 
@@ -407,18 +409,6 @@ button{
         font-size:16px;
     }
 
-    #overlaySkillName{
-        font-size:24px;
-    }
-
-    #overlaySkillDamage{
-        font-size:20px;
-    }
-
-    #overlaySkillEffect{
-        font-size:14px;
-    }
-
     #cutinText{
         font-size:30px;
     }
@@ -464,17 +454,11 @@ button{
     <h1>ルール説明</h1>
 
     <p>
-        暴走スゥナの攻撃に耐えながら、<br>
-        協力してHPを削り切れ！
+        暴走スゥナを協力して倒せ！
     </p>
 
     <p>
-        HPが減るほど、
-        危険なワザが出やすくなる！
-    </p>
-
-    <p>
-        Ver 0.1.3
+        Ver 0.2.0
     </p>
 
     <button onclick="backToTitle()">
@@ -491,21 +475,26 @@ button{
 
     <h1>人数選択</h1>
 
-    <button onclick="startGame(1500)">
-        1人用（HP1500）
+    <button onclick="startGame(1)">
+        1人用
     </button>
 
-    <button onclick="startGame(3000)">
-        2人用（HP3000）
+    <button onclick="startGame(2)">
+        2人用
     </button>
 
 </div>
 
 <!-- =========================
-     ゲーム画面
+     ゲーム
 ========================= -->
 
 <div id="gameScreen" class="screen">
+
+    <!-- ターン -->
+    <div id="turnDisplay">
+        プレイヤーターン
+    </div>
 
     <!-- HP -->
     <div id="hpText">
@@ -516,30 +505,51 @@ button{
         <div id="hpBar"></div>
     </div>
 
-    <!-- ダメージ入力 -->
-    <div class="damageArea">
+    <!-- プレイヤーUI -->
+    <div id="playerArea">
 
-        <input
-            type="number"
-            id="damageInput"
-            placeholder="ダメージ">
+        <div class="damageArea">
 
-        <br>
+            <input
+                type="text"
+                id="damageInput"
+                placeholder="ダメージ">
 
-        <button onclick="applyDamage()">
-            OK
+            <br>
+
+            <button onclick="applyDamage()">
+                ダメージ反映
+            </button>
+
+        </div>
+
+        <button onclick="endPlayerTurn()">
+            ターン終了
         </button>
 
     </div>
 
-    <!-- 敵行動 -->
-    <button
-        id="enemyButton"
-        onclick="enemyAction()">
+    <!-- 敵UI -->
+    <div id="enemyArea" style="display:none;">
 
-        敵の行動
+        <button
+            id="enemyActionButton"
+            onclick="enemyAction()">
 
-    </button>
+            スゥナの攻撃
+
+        </button>
+
+        <button
+            id="enemySkipButton"
+            onclick="endEnemyTurn()"
+            style="display:none;">
+
+            何もしない
+
+        </button>
+
+    </div>
 
     <!-- ★ -->
     <div id="roulette">
@@ -618,14 +628,21 @@ button{
    データ
 ========================= */
 
+let gameMode = 1;
+
 let maxHp = 3000;
 let hp = 3000;
 
-let turnCount = 0;
+let turnCount = 1;
+
+let currentSide = "player";
+
+let currentPlayer = "先";
+
 let maxDamage = 0;
 
 /* =========================
-   ワザデータ
+   ワザ
 ========================= */
 
 const skills = {
@@ -634,7 +651,7 @@ const skills = {
         {
             name:"どうして止めるの？",
             damage:100,
-            effect:"ベンチポケモン１匹にダメカン３個のせる。（どのポケモンにするかはプレイヤーが選んでよい。）"
+            effect:"ベンチ１匹にダメカン３個。"
         }
     ],
 
@@ -642,7 +659,7 @@ const skills = {
         {
             name:"あなたも欲しいんでしょう？",
             damage:40,
-            effect:"攻撃を受けるプレイヤーの場のエネルギーの数×40ダメージ追加。"
+            effect:"場のエネルギー×40追加。"
         }
     ],
 
@@ -650,7 +667,7 @@ const skills = {
         {
             name:"ぜんぶ引けば解決するよ？",
             damage:130,
-            effect:"すべてのプレイヤーは手札をウラにして切り山札の下にもどす。その後、山札を５枚ひく。"
+            effect:"全員手札を戻して5枚引く。"
         }
     ],
 
@@ -658,7 +675,7 @@ const skills = {
         {
             name:"まだ終われないよ",
             damage:180,
-            effect:"このワザを２回使う。（いわゆる「おまつりおんど」）"
+            effect:"このワザを2回使う。"
         }
     ],
 
@@ -666,7 +683,7 @@ const skills = {
         {
             name:"あなたは選ばれたんだよ",
             damage:250,
-            effect:"このワザを受けたプレイヤーはコインを投げる。おもてならベンチポケモンすべてに150ダメージ。"
+            effect:"表ならベンチ全員150。"
         }
     ],
 
@@ -674,7 +691,7 @@ const skills = {
         {
             name:"その一枚が、終わりになる",
             damage:350,
-            effect:"このワザを受けたプレイヤーは手札をすべてトラッシュする。その後、山札を１枚ひく。"
+            effect:"手札全トラッシュ。"
         }
     ]
 
@@ -792,15 +809,33 @@ function showDifficulty(){
    ゲーム開始
 ========================= */
 
-function startGame(startHp){
+function startGame(mode){
 
-    maxHp = startHp;
-    hp = startHp;
+    gameMode = mode;
 
-    turnCount = 0;
+    if(mode === 1){
+
+        maxHp = 1500;
+
+    }else{
+
+        maxHp = 3000;
+
+    }
+
+    hp = maxHp;
+
+    turnCount = 1;
+
+    currentSide = "player";
+
+    currentPlayer = "先";
+
     maxDamage = 0;
 
     updateHpBar();
+
+    updateTurnUI();
 
     hideAllScreens();
 
@@ -826,6 +861,150 @@ function updateHpBar(){
     document.getElementById("hpBar")
     .style.width =
         percent + "%";
+
+}
+
+/* =========================
+   ターンUI更新
+========================= */
+
+function updateTurnUI(){
+
+    const playerArea =
+        document.getElementById(
+            "playerArea"
+        );
+
+    const enemyArea =
+        document.getElementById(
+            "enemyArea"
+        );
+
+    const enemyActionButton =
+        document.getElementById(
+            "enemyActionButton"
+        );
+
+    const enemySkipButton =
+        document.getElementById(
+            "enemySkipButton"
+        );
+
+    const turnDisplay =
+        document.getElementById(
+            "turnDisplay"
+        );
+
+    if(currentSide === "player"){
+
+        playerArea.style.display =
+            "block";
+
+        enemyArea.style.display =
+            "none";
+
+        if(gameMode === 1){
+
+            turnDisplay.innerText =
+                `プレイヤーターン（${turnCount}ターン目）`;
+
+        }else{
+
+            turnDisplay.innerText =
+                `${currentPlayer}攻ターン（${turnCount}ターン目）`;
+
+        }
+
+    }else{
+
+        playerArea.style.display =
+            "none";
+
+        enemyArea.style.display =
+            "block";
+
+        let noAttack = false;
+
+        if(turnCount === 1){
+
+            noAttack = true;
+
+        }
+
+        if(noAttack){
+
+            enemyActionButton.style.display =
+                "none";
+
+            enemySkipButton.style.display =
+                "inline-block";
+
+        }else{
+
+            enemyActionButton.style.display =
+                "inline-block";
+
+            enemySkipButton.style.display =
+                "none";
+
+        }
+
+        if(gameMode === 1){
+
+            turnDisplay.innerText =
+                `スゥナターン（${turnCount}ターン目）`;
+
+        }else{
+
+            turnDisplay.innerText =
+                `スゥナターン（${currentPlayer}${turnCount}ターン目）`;
+
+        }
+
+    }
+
+}
+
+/* =========================
+   プレイヤー終了
+========================= */
+
+function endPlayerTurn(){
+
+    currentSide = "enemy";
+
+    updateTurnUI();
+
+}
+
+/* =========================
+   敵終了
+========================= */
+
+function endEnemyTurn(){
+
+    if(gameMode === 1){
+
+        turnCount++;
+
+    }else{
+
+        if(currentPlayer === "先"){
+
+            currentPlayer = "後";
+
+        }else{
+
+            currentPlayer = "先";
+            turnCount++;
+
+        }
+
+    }
+
+    currentSide = "player";
+
+    updateTurnUI();
 
 }
 
@@ -959,6 +1138,8 @@ function closeSkillOverlay(){
         "skillOverlay"
     ).style.display = "none";
 
+    endEnemyTurn();
+
 }
 
 /* =========================
@@ -968,12 +1149,17 @@ function closeSkillOverlay(){
 function applyDamage(){
 
     const input =
-        document.getElementById("damageInput");
+        document.getElementById(
+            "damageInput"
+        );
+
+    const text =
+        input.value;
 
     const damage =
-        Number(input.value);
+        parseInt(text);
 
-    if(!damage || damage <= 0){
+    if(isNaN(damage) || damage <= 0){
         return;
     }
 
@@ -982,8 +1168,6 @@ function applyDamage(){
     if(hp < 0){
         hp = 0;
     }
-
-    turnCount++;
 
     if(damage > maxDamage){
         maxDamage = damage;
@@ -1007,7 +1191,9 @@ function applyDamage(){
 
 function showResult(){
 
-    changeBackgroundVideo("suuna_clear.mp4");
+    changeBackgroundVideo(
+        "suuna_clear.mp4"
+    );
 
     hideAllScreens();
 
@@ -1023,7 +1209,7 @@ function showResult(){
     document
     .getElementById("turnText")
     .innerText =
-        "ターン数：" + turnCount;
+        "ターン数：" + (turnCount - 1);
 
 }
 
