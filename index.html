@@ -445,7 +445,13 @@ function applyDamage() {
     return;
   }
 
+  /* HP減少 */
   hp -= damage;
+
+  /* 0未満防止 */
+  if (hp < 0) {
+    hp = 0;
+  }
 
   /* ターン数 */
   turnCount++;
@@ -455,19 +461,31 @@ function applyDamage() {
     maxDamage = damage;
   }
 
+  /* HP表示更新 */
   updateHP();
-
-  document.getElementById("result").innerText =
-    damage + "ダメージ与えた！";
 
   /* 入力欄クリア */
   input.value = "";
 
-  /* 勝利判定 */
+  /* 撃破判定 */
   if (hp <= 0) {
 
-    showResultScreen();
+    document.getElementById("result").innerText =
+      "暴走スゥナを倒した！";
+
+    /* 1秒後にリザルト */
+    setTimeout(() => {
+
+      showResultScreen();
+
+    }, 1000);
+
+    return;
   }
+
+  /* 通常時 */
+  document.getElementById("result").innerText =
+    damage + "ダメージ与えた！";
 }
 
 /* =========================
