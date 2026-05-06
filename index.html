@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>暴走スゥナ</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+  color: white;
+  background: black;
+}
+
+/* 背景動画 */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  z-index: -2;
+}
+
+/* 暗幕 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+
+  z-index: -1;
+}
+
+/* 各画面 */
+.screen {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 20px;
+
+  text-align: center;
+}
+
+/* タイトル */
+.title {
+  font-size: 64px;
+  font-weight: bold;
+
+  text-shadow:
+    0 0 10px #ff66cc,
+    0 0 20px #ff66cc,
+    0 0 40px #ff66cc;
+}
+
+/* ボタン */
+button {
+  font-size: 24px;
+
+  padding: 15px 40px;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.9);
+
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* HP表示 */
+#hp {
+  font-size: 42px;
+  font-weight: bold;
+
+  text-shadow: 0 0 10px red;
+}
+
+/* 技表示 */
+#result {
+  font-size: 28px;
+
+  min-height: 50px;
+
+  text-shadow: 0 0 10px black;
+}
+
+/* ダメージ入力 */
+.damage-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.damage-input {
+  width: 180px;
+
+  font-size: 28px;
+
+  padding: 12px;
+
+  border-radius: 10px;
+  border: none;
+
+  text-align: center;
+}
+
+/* スマホ調整 */
+@media (max-width: 768px) {
+
+  .title {
+    font-size: 42px;
+  }
+
+  button {
+    width: 80%;
+    font-size: 20px;
+  }
+
+  #hp {
+    font-size: 32px;
+  }
+
+  #result {
+    font-size: 22px;
+  }
+
+  .damage-input {
+    width: 140px;
+    font-size: 24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 背景動画 -->
+<video autoplay muted loop playsinline id="bgVideo">
+  <source src="suuna_loop.mp4" type="video/mp4">
+</video>
+
+<!-- 暗幕 -->
+<div class="overlay"></div>
+
+<!-- タイトル画面 -->
+<div id="titleScreen" class="screen">
+
+  <div class="title">
+    暴走スゥナ
+  </div>
+
+  <button onclick="showPlayerSelect()">
+    ゲームスタート
+  </button>
+
+  <button onclick="showRules()">
+    ルール説明
+  </button>
+
+</div>
+
+<!-- ルール画面 -->
+<div id="ruleScreen" class="screen" style="display:none;">
+
+  <h2>ルール説明</h2>
+
+  <p>
+    暴走したスゥナをみんなで倒そう！<br><br>
+
+    スゥナは毎ターン<br>
+    ランダムでワザを使用！<br><br>
+
+    プレイヤー側でダメージを計算し、<br>
+    アプリに入力してHPを減らそう！
+  </p>
+
+  <button onclick="backTitle()">
+    戻る
+  </button>
+
+</div>
+
+<!-- 人数選択画面 -->
+<div id="playerSelectScreen" class="screen" style="display:none;">
+
+  <h2>人数を選択</h2>
+
+  <button onclick="startGame(1500)">
+    １人用
+  </button>
+
+  <button onclick="startGame(3000)">
+    ２人用
+  </button>
+
+  <button onclick="backTitle()">
+    戻る
+  </button>
+
+</div>
+
+<!-- ゲーム画面 -->
+<div id="gameScreen" class="screen" style="display:none;">
+
+  <h2>GAME START</h2>
+
+  <div id="hp">
+    HP: 3000
+  </div>
+
+  <!-- ダメージ入力 -->
+  <div class="damage-area">
+
+    <input
+      type="number"
+      id="damageInput"
+      class="damage-input"
+      placeholder="ダメージ"
+    >
+
+    <button onclick="applyDamage()">
+      OK
+    </button>
+
+  </div>
+
+  <!-- 敵行動 -->
+  <button onclick="attack()">
+    敵の行動
+  </button>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+
+/* =========================
+   基本データ
+========================= */
+
+let hp = 3000;
+
+/* 技一覧 */
+const moves = [
+
+  {
+    name: "かみつく",
+    damage: 20
+  },
+
+  {
+    name: "れんぞくビンタ",
+    damage: 40
+  },
+
+  {
+    name: "だいばくはつ",
+    damage: 100
+  },
+
+  {
+    name: "いやしのひかり",
+    heal: 50
+  }
+
+];
+
+/* =========================
+   画面切替
+========================= */
+
+function hideAll() {
+
+  document.getElementById("titleScreen").style.display = "none";
+
+  document.getElementById("ruleScreen").style.display = "none";
+
+  document.getElementById("playerSelectScreen").style.display = "none";
+
+  document.getElementById("gameScreen").style.display = "none";
+}
+
+function backTitle() {
+
+  hideAll();
+
+  document.getElementById("titleScreen").style.display = "flex";
+}
+
+function showRules() {
+
+  hideAll();
+
+  document.getElementById("ruleScreen").style.display = "flex";
+}
+
+function showPlayerSelect() {
+
+  hideAll();
+
+  document.getElementById("playerSelectScreen").style.display = "flex";
+}
+
+/* =========================
+   ゲーム開始
+========================= */
+
+function startGame(startHP) {
+
+  hp = startHP;
+
+  updateHP();
+
+  document.getElementById("result").innerText = "";
+
+  hideAll();
+
+  document.getElementById("gameScreen").style.display = "flex";
+}
+
+/* =========================
+   HP更新
+========================= */
+
+function updateHP() {
+
+  if (hp < 0) {
+    hp = 0;
+  }
+
+  document.getElementById("hp").innerText =
+    "HP: " + hp;
+}
+
+/* =========================
+   ダメージ適用
+========================= */
+
+function applyDamage() {
+
+  const input =
+    document.getElementById("damageInput");
+
+  const damage =
+    Number(input.value);
+
+  /* 入力チェック */
+  if (!damage || damage <= 0) {
+    return;
+  }
+
+  hp -= damage;
+
+  updateHP();
+
+  document.getElementById("result").innerText =
+    damage + "ダメージ与えた！";
+
+  /* 入力欄クリア */
+  input.value = "";
+
+  /* 勝利判定 */
+  if (hp <= 0) {
+
+    document.getElementById("result").innerText =
+      "暴走スゥナを倒した！";
+  }
+}
+
+/* =========================
+   敵行動
+========================= */
+
+function attack() {
+
+  /* HP0なら動かない */
+  if (hp <= 0) {
+    return;
+  }
+
+  /* ランダム抽選 */
+  const move =
+    moves[Math.floor(Math.random() * moves.length)];
+
+  let text = move.name + "！ ";
+
+  /* ダメージ技 */
+  if (move.damage) {
+
+    text +=
+      "プレイヤーに" +
+      move.damage +
+      "ダメージ！";
+  }
+
+  /* 回復技 */
+  if (move.heal) {
+
+    hp += move.heal;
+
+    text +=
+      "暴走スゥナは" +
+      move.heal +
+      "回復した！";
+
+    updateHP();
+  }
+
+  document.getElementById("result").innerText = text;
+}
+
+</script>
+
+</body>
+</html>
