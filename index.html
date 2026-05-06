@@ -7,6 +7,7 @@
 <title>暴走スゥナ</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -37,6 +38,7 @@ body {
 .overlay {
   position: fixed;
   inset: 0;
+
   background: rgba(0,0,0,0.5);
 
   z-index: -1;
@@ -44,6 +46,7 @@ body {
 
 /* 各画面 */
 .screen {
+
   position: absolute;
 
   width: 100%;
@@ -64,6 +67,7 @@ body {
 
 /* タイトル */
 .title {
+
   font-size: 64px;
   font-weight: bold;
 
@@ -75,6 +79,7 @@ body {
 
 /* ボタン */
 button {
+
   font-size: 24px;
 
   padding: 15px 40px;
@@ -95,6 +100,7 @@ button:hover {
 
 /* HP表示 */
 #hp {
+
   font-size: 42px;
   font-weight: bold;
 
@@ -103,6 +109,7 @@ button:hover {
 
 /* 技表示 */
 #result {
+
   font-size: 28px;
 
   min-height: 50px;
@@ -112,14 +119,19 @@ button:hover {
 
 /* ダメージ入力 */
 .damage-area {
+
   display: flex;
+
   gap: 10px;
+
   align-items: center;
   justify-content: center;
+
   flex-wrap: wrap;
 }
 
 .damage-input {
+
   width: 180px;
 
   font-size: 28px;
@@ -132,7 +144,15 @@ button:hover {
   text-align: center;
 }
 
-/* スマホ調整 */
+/* リザルト */
+.result-text {
+
+  font-size: 32px;
+
+  text-shadow: 0 0 10px black;
+}
+
+/* スマホ */
 @media (max-width: 768px) {
 
   .title {
@@ -156,7 +176,12 @@ button:hover {
     width: 140px;
     font-size: 24px;
   }
+
+  .result-text {
+    font-size: 24px;
+  }
 }
+
 </style>
 </head>
 
@@ -261,6 +286,27 @@ button:hover {
 
 </div>
 
+<!-- リザルト画面 -->
+<div id="resultScreen" class="screen" style="display:none;">
+
+  <h1>RESULT</h1>
+
+  <div
+    id="maxDamageResult"
+    class="result-text"
+  ></div>
+
+  <div
+    id="turnResult"
+    class="result-text"
+  ></div>
+
+  <button onclick="backTitle()">
+    タイトルへ戻る
+  </button>
+
+</div>
+
 <script>
 
 /* =========================
@@ -268,6 +314,10 @@ button:hover {
 ========================= */
 
 let hp = 3000;
+
+let maxDamage = 0;
+
+let turnCount = 0;
 
 /* 技一覧 */
 const moves = [
@@ -300,34 +350,44 @@ const moves = [
 
 function hideAll() {
 
-  document.getElementById("titleScreen").style.display = "none";
+  document.getElementById("titleScreen").style.display =
+    "none";
 
-  document.getElementById("ruleScreen").style.display = "none";
+  document.getElementById("ruleScreen").style.display =
+    "none";
 
-  document.getElementById("playerSelectScreen").style.display = "none";
+  document.getElementById("playerSelectScreen").style.display =
+    "none";
 
-  document.getElementById("gameScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display =
+    "none";
+
+  document.getElementById("resultScreen").style.display =
+    "none";
 }
 
 function backTitle() {
 
   hideAll();
 
-  document.getElementById("titleScreen").style.display = "flex";
+  document.getElementById("titleScreen").style.display =
+    "flex";
 }
 
 function showRules() {
 
   hideAll();
 
-  document.getElementById("ruleScreen").style.display = "flex";
+  document.getElementById("ruleScreen").style.display =
+    "flex";
 }
 
 function showPlayerSelect() {
 
   hideAll();
 
-  document.getElementById("playerSelectScreen").style.display = "flex";
+  document.getElementById("playerSelectScreen").style.display =
+    "flex";
 }
 
 /* =========================
@@ -338,13 +398,20 @@ function startGame(startHP) {
 
   hp = startHP;
 
+  maxDamage = 0;
+
+  turnCount = 0;
+
   updateHP();
 
   document.getElementById("result").innerText = "";
 
+  document.getElementById("damageInput").value = "";
+
   hideAll();
 
-  document.getElementById("gameScreen").style.display = "flex";
+  document.getElementById("gameScreen").style.display =
+    "flex";
 }
 
 /* =========================
@@ -380,6 +447,14 @@ function applyDamage() {
 
   hp -= damage;
 
+  /* ターン数 */
+  turnCount++;
+
+  /* 最大ダメージ更新 */
+  if (damage > maxDamage) {
+    maxDamage = damage;
+  }
+
   updateHP();
 
   document.getElementById("result").innerText =
@@ -391,8 +466,7 @@ function applyDamage() {
   /* 勝利判定 */
   if (hp <= 0) {
 
-    document.getElementById("result").innerText =
-      "暴走スゥナを倒した！";
+    showResultScreen();
   }
 }
 
@@ -435,7 +509,26 @@ function attack() {
     updateHP();
   }
 
-  document.getElementById("result").innerText = text;
+  document.getElementById("result").innerText =
+    text;
+}
+
+/* =========================
+   リザルト表示
+========================= */
+
+function showResultScreen() {
+
+  hideAll();
+
+  document.getElementById("resultScreen").style.display =
+    "flex";
+
+  document.getElementById("maxDamageResult").innerText =
+    "最大ダメージ： " + maxDamage;
+
+  document.getElementById("turnResult").innerText =
+    "ターン数： " + turnCount;
 }
 
 </script>
