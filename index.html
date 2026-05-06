@@ -190,56 +190,77 @@ button{
 }
 
 /* =========================
-   ワザ表示
-========================= */
-
-#skillBox{
-
-    width:92%;
-    max-width:520px;
-
-    background:
-        rgba(0,0,0,0.38);
-
-    border:
-        2px solid rgba(255,255,255,0.7);
-
-    border-radius:18px;
-
-    padding:10px;
-
-    backdrop-filter: blur(4px);
-}
-
-#skillName{
-
-    font-size:24px;
-    font-weight:bold;
-
-    margin-bottom:8px;
-}
-
-#skillDamage{
-
-    font-size:20px;
-
-    margin-bottom:8px;
-}
-
-#skillEffect{
-
-    font-size:14px;
-
-    line-height:1.4;
-}
-
-/* =========================
    ゲーム画面
 ========================= */
 
 #gameScreen{
     justify-content:flex-end;
     padding-bottom:40px;
+}
+
+/* =========================
+   技オーバーレイ
+========================= */
+
+#skillOverlay{
+
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:
+        rgba(0,0,0,0.6);
+
+    z-index:999;
+}
+
+#overlayCard{
+
+    width:90%;
+    max-width:520px;
+
+    background:
+        rgba(20,20,20,0.92);
+
+    border:
+        2px solid white;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    text-align:center;
+
+    animation:
+        popup 0.25s ease;
+}
+
+#overlaySkillName{
+
+    font-size:30px;
+    font-weight:bold;
+
+    margin-bottom:14px;
+}
+
+#overlaySkillDamage{
+
+    font-size:24px;
+
+    margin-bottom:14px;
+}
+
+#overlaySkillEffect{
+
+    font-size:16px;
+
+    line-height:1.6;
+
+    margin-bottom:20px;
 }
 
 /* =========================
@@ -257,6 +278,24 @@ button{
 }
 
 /* =========================
+   ポップ演出
+========================= */
+
+@keyframes popup{
+
+    from{
+        transform:scale(0.85);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+/* =========================
    スマホ
 ========================= */
 
@@ -270,16 +309,16 @@ button{
         font-size:16px;
     }
 
-    #skillName{
+    #overlaySkillName{
+        font-size:24px;
+    }
+
+    #overlaySkillDamage{
         font-size:20px;
     }
 
-    #skillDamage{
-        font-size:18px;
-    }
-
-    #skillEffect{
-        font-size:13px;
+    #overlaySkillEffect{
+        font-size:14px;
     }
 
 }
@@ -405,20 +444,31 @@ button{
         ★☆☆☆☆☆
     </div>
 
-    <!-- ワザ表示 -->
-    <div id="skillBox">
+</div>
 
-        <div id="skillName">
+<!-- =========================
+     技オーバーレイ
+========================= -->
+
+<div id="skillOverlay">
+
+    <div id="overlayCard">
+
+        <div id="overlaySkillName">
             ---
         </div>
 
-        <div id="skillDamage">
+        <div id="overlaySkillDamage">
             ---
         </div>
 
-        <div id="skillEffect">
+        <div id="overlaySkillEffect">
             ---
         </div>
+
+        <button onclick="closeSkillOverlay()">
+            OK
+        </button>
 
     </div>
 
@@ -699,17 +749,36 @@ function showSkill(level){
             )
         ];
 
-    document.getElementById("skillName")
-    .innerText =
+    document.getElementById(
+        "overlaySkillName"
+    ).innerText =
         skill.name;
 
-    document.getElementById("skillDamage")
-    .innerText =
+    document.getElementById(
+        "overlaySkillDamage"
+    ).innerText =
         skill.damage + " ダメージ";
 
-    document.getElementById("skillEffect")
-    .innerText =
+    document.getElementById(
+        "overlaySkillEffect"
+    ).innerText =
         skill.effect;
+
+    document.getElementById(
+        "skillOverlay"
+    ).style.display = "flex";
+
+}
+
+/* =========================
+   オーバーレイ閉じる
+========================= */
+
+function closeSkillOverlay(){
+
+    document.getElementById(
+        "skillOverlay"
+    ).style.display = "none";
 
 }
 
