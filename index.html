@@ -22,21 +22,28 @@ body {
 
 /* 背景動画 */
 #bgVideo {
+
   position: fixed;
+
   top: 0;
   left: 0;
 
   width: 100%;
   height: 100%;
 
-  object-fit: cover;
+  /* ← 修正ポイント */
+  object-fit: contain;
+
+  background: black;
 
   z-index: -2;
 }
 
 /* 暗幕 */
 .overlay {
+
   position: fixed;
+
   inset: 0;
 
   background: rgba(0,0,0,0.5);
@@ -218,14 +225,17 @@ button:hover {
   <h2>ルール説明</h2>
 
   <p>
+    Ver 0.0.6
+  </p>
+
+  <p>
     暴走したスゥナをみんなで倒そう！<br><br>
 
     スゥナは毎ターン<br>
     ランダムでワザを使用！<br><br>
 
     プレイヤー側でダメージを計算し、<br>
-    アプリに入力してHPを減らそう！<br>
-    (ver 1.1)
+    アプリに入力してHPを減らそう！
   </p>
 
   <button onclick="backTitle()">
