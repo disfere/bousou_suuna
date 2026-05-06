@@ -47,7 +47,8 @@ body{
     justify-content:center;
     align-items:center;
 
-    padding:20px;
+    padding:15px;
+
     text-align:center;
 }
 
@@ -60,7 +61,7 @@ body{
 ========================= */
 
 .title{
-    font-size:64px;
+    font-size:52px;
     font-weight:bold;
 
     color:white;
@@ -70,7 +71,7 @@ body{
         0 0 20px #ff00aa,
         0 0 40px #ff00aa;
 
-    margin-bottom:40px;
+    margin-bottom:30px;
 }
 
 /* =========================
@@ -78,17 +79,17 @@ body{
 ========================= */
 
 button{
-    width:300px;
+    width:260px;
     max-width:80vw;
 
-    padding:18px;
+    padding:16px;
 
-    margin:12px;
+    margin:10px;
 
     border:none;
     border-radius:18px;
 
-    font-size:28px;
+    font-size:24px;
     font-weight:bold;
 
     cursor:pointer;
@@ -99,15 +100,19 @@ button{
 ========================= */
 
 #hpText{
-    font-size:42px;
+    font-size:30px;
     margin-bottom:10px;
+
+    text-shadow:
+        0 0 10px black;
 }
 
 #hpBarWrap{
-    width:90%;
-    max-width:700px;
 
-    height:40px;
+    width:90%;
+    max-width:600px;
+
+    height:24px;
 
     background:#333;
 
@@ -115,7 +120,7 @@ button{
 
     overflow:hidden;
 
-    margin-bottom:40px;
+    margin-bottom:20px;
 }
 
 #hpBar{
@@ -133,20 +138,55 @@ button{
 }
 
 /* =========================
-   危険度ルーレット
+   ダメージ入力
+========================= */
+
+.damageArea{
+    margin-bottom:15px;
+}
+
+.damageArea input{
+
+    width:180px;
+
+    padding:12px;
+
+    font-size:28px;
+    text-align:center;
+
+    border:none;
+    border-radius:12px;
+}
+
+.damageArea button{
+    width:180px;
+}
+
+/* =========================
+   敵行動
+========================= */
+
+#enemyButton{
+    margin-top:0;
+    margin-bottom:15px;
+}
+
+/* =========================
+   ★ルーレット
 ========================= */
 
 #roulette{
-    font-size:72px;
+
+    font-size:42px;
     font-weight:bold;
 
-    margin-bottom:30px;
+    margin-bottom:20px;
+
+    min-height:60px;
 
     text-shadow:
         0 0 10px white,
         0 0 20px white;
-
-    min-height:120px;
 }
 
 /* =========================
@@ -155,65 +195,42 @@ button{
 
 #skillBox{
 
-    width:90%;
-    max-width:800px;
+    width:92%;
+    max-width:700px;
 
     background:
-        rgba(0,0,0,0.7);
+        rgba(0,0,0,0.55);
 
     border:
         3px solid white;
 
     border-radius:20px;
 
-    padding:25px;
-
-    margin-top:20px;
+    padding:15px;
 
     backdrop-filter: blur(4px);
 }
 
 #skillName{
-    font-size:48px;
+
+    font-size:34px;
     font-weight:bold;
 
-    margin-bottom:20px;
+    margin-bottom:15px;
 }
 
 #skillDamage{
-    font-size:40px;
 
-    margin-bottom:20px;
+    font-size:28px;
+
+    margin-bottom:15px;
 }
 
 #skillEffect{
-    font-size:24px;
+
+    font-size:18px;
+
     line-height:1.6;
-    opacity:0.9;
-}
-
-/* =========================
-   ダメージ入力
-========================= */
-
-.damageArea{
-    margin-top:40px;
-}
-
-.damageArea input{
-    width:200px;
-
-    padding:12px;
-
-    font-size:28px;
-    text-align:center;
-
-    border-radius:12px;
-    border:none;
-}
-
-.damageArea button{
-    width:180px;
 }
 
 /* =========================
@@ -221,42 +238,34 @@ button{
 ========================= */
 
 .resultTitle{
-    font-size:64px;
-    margin-bottom:40px;
+    font-size:52px;
+    margin-bottom:30px;
 }
 
 .resultText{
-    font-size:36px;
-    margin:15px;
+    font-size:28px;
+    margin:10px;
 }
 
 /* =========================
-   スマホ調整
+   スマホ
 ========================= */
 
 @media(max-width:700px){
 
     .title{
-        font-size:48px;
-    }
-
-    #roulette{
-        font-size:48px;
-    }
-
-    #skillName{
-        font-size:34px;
-    }
-
-    #skillDamage{
-        font-size:30px;
-    }
-
-    #skillEffect{
-        font-size:20px;
+        font-size:42px;
     }
 
     button{
+        font-size:22px;
+    }
+
+    #skillName{
+        font-size:28px;
+    }
+
+    #skillDamage{
         font-size:24px;
     }
 
@@ -273,7 +282,7 @@ button{
 </video>
 
 <!-- =========================
-     タイトル画面
+     タイトル
 ========================= -->
 
 <div id="titleScreen" class="screen active">
@@ -293,7 +302,7 @@ button{
 </div>
 
 <!-- =========================
-     ルール画面
+     ルール
 ========================= -->
 
 <div id="ruleScreen" class="screen">
@@ -306,16 +315,11 @@ button{
     </p>
 
     <p>
-        敵行動ボタンを押すと、<br>
-        危険度ルーレットが回転！
-    </p>
-
-    <p>
         ★の数が多いほど危険！
     </p>
 
     <p>
-        Ver 0.0.8
+        Ver 0.0.9
     </p>
 
     <button onclick="backToTitle()">
@@ -325,7 +329,7 @@ button{
 </div>
 
 <!-- =========================
-     難易度選択
+     難易度
 ========================= -->
 
 <div id="difficultyScreen" class="screen">
@@ -348,6 +352,7 @@ button{
 
 <div id="gameScreen" class="screen">
 
+    <!-- HP -->
     <div id="hpText">
         HP 3000 / 3000
     </div>
@@ -356,14 +361,37 @@ button{
         <div id="hpBar"></div>
     </div>
 
+    <!-- ダメージ入力 -->
+    <div class="damageArea">
+
+        <input
+            type="number"
+            id="damageInput"
+            placeholder="ダメージ">
+
+        <br>
+
+        <button onclick="applyDamage()">
+            OK
+        </button>
+
+    </div>
+
+    <!-- 敵行動 -->
+    <button
+        id="enemyButton"
+        onclick="enemyAction()">
+
+        敵の行動
+
+    </button>
+
+    <!-- ★ -->
     <div id="roulette">
         ★☆☆☆☆☆
     </div>
 
-    <button onclick="enemyAction()">
-        敵の行動
-    </button>
-
+    <!-- ワザ表示 -->
     <div id="skillBox">
 
         <div id="skillName">
@@ -377,21 +405,6 @@ button{
         <div id="skillEffect">
             ---
         </div>
-
-    </div>
-
-    <div class="damageArea">
-
-        <input
-            type="number"
-            id="damageInput"
-            placeholder="ダメージ">
-
-        <br>
-
-        <button onclick="applyDamage()">
-            OK
-        </button>
 
     </div>
 
@@ -644,7 +657,7 @@ function showSkill(level){
 }
 
 /* =========================
-   ダメージ処理
+   ダメージ
 ========================= */
 
 function applyDamage(){
