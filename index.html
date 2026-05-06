@@ -25,7 +25,6 @@ body{
 ========================= */
 
 #bgVideo{
-
     position:fixed;
     inset:0;
 
@@ -41,7 +40,6 @@ body{
     transition:opacity 1s;
 }
 
-/* フェード用 */
 .fadeOut{
     opacity:0;
 }
@@ -63,7 +61,7 @@ body{
     justify-content:center;
     align-items:center;
 
-    padding:15px;
+    padding:10px;
 
     text-align:center;
 }
@@ -77,17 +75,14 @@ body{
 ========================= */
 
 .title{
-    font-size:52px;
+    font-size:40px;
     font-weight:bold;
-
-    color:white;
 
     text-shadow:
         0 0 10px #ff00aa,
-        0 0 20px #ff00aa,
-        0 0 40px #ff00aa;
+        0 0 20px #ff00aa;
 
-    margin-bottom:30px;
+    margin-bottom:20px;
 }
 
 /* =========================
@@ -95,17 +90,17 @@ body{
 ========================= */
 
 button{
-    width:260px;
-    max-width:80vw;
+    width:180px;
+    max-width:70vw;
 
-    padding:16px;
+    padding:10px;
 
-    margin:10px;
+    margin:6px;
 
     border:none;
-    border-radius:18px;
+    border-radius:14px;
 
-    font-size:24px;
+    font-size:18px;
     font-weight:bold;
 
     cursor:pointer;
@@ -116,8 +111,9 @@ button{
 ========================= */
 
 #hpText{
-    font-size:30px;
-    margin-bottom:10px;
+    font-size:20px;
+
+    margin-bottom:8px;
 
     text-shadow:
         0 0 10px black;
@@ -125,10 +121,10 @@ button{
 
 #hpBarWrap{
 
-    width:90%;
-    max-width:600px;
+    width:80%;
+    max-width:450px;
 
-    height:24px;
+    height:14px;
 
     background:#333;
 
@@ -136,7 +132,7 @@ button{
 
     overflow:hidden;
 
-    margin-bottom:20px;
+    margin-bottom:15px;
 }
 
 #hpBar{
@@ -158,24 +154,25 @@ button{
 ========================= */
 
 .damageArea{
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 .damageArea input{
 
-    width:180px;
+    width:120px;
 
-    padding:12px;
+    padding:8px;
 
-    font-size:28px;
+    font-size:18px;
+
     text-align:center;
 
     border:none;
-    border-radius:12px;
+    border-radius:10px;
 }
 
 .damageArea button{
-    width:180px;
+    width:100px;
 }
 
 /* =========================
@@ -183,8 +180,7 @@ button{
 ========================= */
 
 #enemyButton{
-    margin-top:0;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 /* =========================
@@ -193,60 +189,86 @@ button{
 
 #roulette{
 
-    font-size:42px;
+    font-size:32px;
     font-weight:bold;
 
-    margin-bottom:20px;
+    margin-bottom:10px;
 
-    min-height:60px;
+    min-height:45px;
 
     text-shadow:
-        0 0 10px white,
-        0 0 20px white;
+        0 0 10px white;
 }
 
 /* =========================
-   ワザ表示
+   ワザオーバーレイ
 ========================= */
 
-#skillBox{
+#skillOverlay{
 
-    width:92%;
-    max-width:700px;
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
 
     background:
         rgba(0,0,0,0.55);
 
+    z-index:10;
+}
+
+#skillOverlay.active{
+    display:flex;
+}
+
+#skillBox{
+
+    width:88%;
+    max-width:500px;
+
+    background:
+        rgba(0,0,0,0.75);
+
     border:
-        3px solid white;
+        2px solid white;
 
     border-radius:20px;
 
-    padding:15px;
+    padding:18px;
+
+    text-align:center;
 
     backdrop-filter: blur(4px);
 }
 
 #skillName{
 
-    font-size:34px;
+    font-size:28px;
     font-weight:bold;
 
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 
 #skillDamage{
 
-    font-size:28px;
+    font-size:22px;
 
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 
 #skillEffect{
 
-    font-size:18px;
+    font-size:15px;
 
-    line-height:1.6;
+    line-height:1.5;
+
+    opacity:0.9;
+
+    margin-bottom:18px;
 }
 
 /* =========================
@@ -254,13 +276,13 @@ button{
 ========================= */
 
 .resultTitle{
-    font-size:52px;
-    margin-bottom:30px;
+    font-size:40px;
+    margin-bottom:20px;
 }
 
 .resultText{
-    font-size:28px;
-    margin:10px;
+    font-size:22px;
+    margin:8px;
 }
 
 /* =========================
@@ -270,19 +292,11 @@ button{
 @media(max-width:700px){
 
     .title{
-        font-size:42px;
+        font-size:34px;
     }
 
     button{
-        font-size:22px;
-    }
-
-    #skillName{
-        font-size:28px;
-    }
-
-    #skillDamage{
-        font-size:24px;
+        font-size:16px;
     }
 
 }
@@ -333,20 +347,19 @@ button{
 
 <div id="ruleScreen" class="screen">
 
-    <h1>ルール説明</h1>
+    <h2>ルール説明</h2>
 
     <p>
-        暴走スゥナの攻撃に耐えながら、<br>
-        協力してHPを削り切れ！
+        暴走スゥナを倒せ！
     </p>
 
     <p>
-        HPが減るほど、
-        危険なワザが出やすくなる！
+        HPが減るほど
+        危険なワザが増加！
     </p>
 
     <p>
-        Ver 0.1.1
+        Ver 0.1.2
     </p>
 
     <button onclick="backToTitle()">
@@ -361,20 +374,20 @@ button{
 
 <div id="difficultyScreen" class="screen">
 
-    <h1>人数選択</h1>
+    <h2>人数選択</h2>
 
     <button onclick="startGame(1500)">
-        1人用（HP1500）
+        1人用
     </button>
 
     <button onclick="startGame(3000)">
-        2人用（HP3000）
+        2人用
     </button>
 
 </div>
 
 <!-- =========================
-     ゲーム画面
+     ゲーム
 ========================= -->
 
 <div id="gameScreen" class="screen">
@@ -388,7 +401,7 @@ button{
         <div id="hpBar"></div>
     </div>
 
-    <!-- ダメージ入力 -->
+    <!-- ダメージ -->
     <div class="damageArea">
 
         <input
@@ -418,7 +431,14 @@ button{
         ★☆☆☆☆☆
     </div>
 
-    <!-- ワザ表示 -->
+</div>
+
+<!-- =========================
+     ワザオーバーレイ
+========================= -->
+
+<div id="skillOverlay">
+
     <div id="skillBox">
 
         <div id="skillName">
@@ -432,6 +452,10 @@ button{
         <div id="skillEffect">
             ---
         </div>
+
+        <button onclick="closeSkillOverlay()">
+            OK
+        </button>
 
     </div>
 
@@ -474,7 +498,7 @@ let turnCount = 0;
 let maxDamage = 0;
 
 /* =========================
-   ワザデータ
+   ワザ
 ========================= */
 
 const skills = {
@@ -491,7 +515,7 @@ const skills = {
         {
             name:"歪曲ノ波動",
             damage:180,
-            effect:"次のターン、回復量半減"
+            effect:"次ターン回復量半減"
         }
     ],
 
@@ -499,7 +523,7 @@ const skills = {
         {
             name:"暴走連撃",
             damage:250,
-            effect:"ランダムなプレイヤー追加50ダメージ"
+            effect:"追加50ダメージ"
         }
     ],
 
@@ -507,7 +531,7 @@ const skills = {
         {
             name:"崩壊ノ叫ビ",
             damage:350,
-            effect:"全プレイヤーに状態異常"
+            effect:"状態異常付与"
         }
     ],
 
@@ -515,7 +539,7 @@ const skills = {
         {
             name:"終焉ノ断罪",
             damage:500,
-            effect:"次ターン、特殊エネルギー無効"
+            effect:"特殊エネルギー無効"
         }
     ],
 
@@ -523,14 +547,14 @@ const skills = {
         {
             name:"暴走因子解放",
             damage:700,
-            effect:"次ターン、敵ダメージ+200"
+            effect:"敵ダメージ+200"
         }
     ]
 
 };
 
 /* =========================
-   背景動画切替
+   背景変更
 ========================= */
 
 function changeBackgroundVideo(fileName){
@@ -574,7 +598,6 @@ function hideAllScreens(){
 
 function backToTitle(){
 
-    /* 背景戻す */
     changeBackgroundVideo(
         "suuna_loop.mp4"
     );
@@ -670,7 +693,7 @@ function enemyAction(){
 
         count++;
 
-        if(count >= 20){
+        if(count >= 18){
 
             clearInterval(interval);
 
@@ -724,7 +747,7 @@ function enemyAction(){
 
         }
 
-    },100);
+    },80);
 
 }
 
@@ -754,6 +777,18 @@ function showSkill(level){
     document.getElementById("skillEffect")
     .innerText =
         skill.effect;
+
+    document
+    .getElementById("skillOverlay")
+    .classList.add("active");
+
+}
+
+function closeSkillOverlay(){
+
+    document
+    .getElementById("skillOverlay")
+    .classList.remove("active");
 
 }
 
@@ -803,7 +838,6 @@ function applyDamage(){
 
 function showResult(){
 
-    /* 背景変更 */
     changeBackgroundVideo(
         "suuna_clear.mp4"
     );
