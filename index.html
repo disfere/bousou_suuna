@@ -47,7 +47,7 @@ body{
     justify-content:center;
     align-items:center;
 
-    padding:15px;
+    padding:10px;
 
     text-align:center;
 }
@@ -61,7 +61,7 @@ body{
 ========================= */
 
 .title{
-    font-size:52px;
+    font-size:36px;
     font-weight:bold;
 
     color:white;
@@ -71,7 +71,7 @@ body{
         0 0 20px #ff00aa,
         0 0 40px #ff00aa;
 
-    margin-bottom:30px;
+    margin-bottom:20px;
 }
 
 /* =========================
@@ -79,17 +79,17 @@ body{
 ========================= */
 
 button{
-    width:260px;
+    width:180px;
     max-width:80vw;
 
-    padding:16px;
+    padding:10px;
 
-    margin:10px;
+    margin:6px;
 
     border:none;
-    border-radius:18px;
+    border-radius:12px;
 
-    font-size:24px;
+    font-size:18px;
     font-weight:bold;
 
     cursor:pointer;
@@ -100,8 +100,8 @@ button{
 ========================= */
 
 #hpText{
-    font-size:30px;
-    margin-bottom:10px;
+    font-size:22px;
+    margin-bottom:8px;
 
     text-shadow:
         0 0 10px black;
@@ -110,9 +110,9 @@ button{
 #hpBarWrap{
 
     width:90%;
-    max-width:600px;
+    max-width:500px;
 
-    height:24px;
+    height:16px;
 
     background:#333;
 
@@ -120,7 +120,7 @@ button{
 
     overflow:hidden;
 
-    margin-bottom:20px;
+    margin-bottom:14px;
 }
 
 #hpBar{
@@ -142,24 +142,24 @@ button{
 ========================= */
 
 .damageArea{
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 .damageArea input{
 
-    width:180px;
+    width:120px;
 
-    padding:12px;
+    padding:8px;
 
-    font-size:28px;
+    font-size:20px;
     text-align:center;
 
     border:none;
-    border-radius:12px;
+    border-radius:10px;
 }
 
 .damageArea button{
-    width:180px;
+    width:120px;
 }
 
 /* =========================
@@ -168,7 +168,7 @@ button{
 
 #enemyButton{
     margin-top:0;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 /* =========================
@@ -177,12 +177,12 @@ button{
 
 #roulette{
 
-    font-size:42px;
+    font-size:28px;
     font-weight:bold;
 
-    margin-bottom:20px;
+    margin-bottom:12px;
 
-    min-height:60px;
+    min-height:40px;
 
     text-shadow:
         0 0 10px white,
@@ -196,41 +196,50 @@ button{
 #skillBox{
 
     width:92%;
-    max-width:700px;
+    max-width:520px;
 
     background:
-        rgba(0,0,0,0.55);
+        rgba(0,0,0,0.38);
 
     border:
-        3px solid white;
+        2px solid rgba(255,255,255,0.7);
 
-    border-radius:20px;
+    border-radius:18px;
 
-    padding:15px;
+    padding:10px;
 
     backdrop-filter: blur(4px);
 }
 
 #skillName{
 
-    font-size:34px;
+    font-size:24px;
     font-weight:bold;
 
-    margin-bottom:15px;
+    margin-bottom:8px;
 }
 
 #skillDamage{
 
-    font-size:28px;
+    font-size:20px;
 
-    margin-bottom:15px;
+    margin-bottom:8px;
 }
 
 #skillEffect{
 
-    font-size:18px;
+    font-size:14px;
 
-    line-height:1.6;
+    line-height:1.4;
+}
+
+/* =========================
+   ゲーム画面
+========================= */
+
+#gameScreen{
+    justify-content:flex-end;
+    padding-bottom:40px;
 }
 
 /* =========================
@@ -238,13 +247,13 @@ button{
 ========================= */
 
 .resultTitle{
-    font-size:52px;
-    margin-bottom:30px;
+    font-size:40px;
+    margin-bottom:20px;
 }
 
 .resultText{
-    font-size:28px;
-    margin:10px;
+    font-size:22px;
+    margin:8px;
 }
 
 /* =========================
@@ -254,19 +263,23 @@ button{
 @media(max-width:700px){
 
     .title{
-        font-size:42px;
+        font-size:30px;
     }
 
     button{
-        font-size:22px;
+        font-size:16px;
     }
 
     #skillName{
-        font-size:28px;
+        font-size:20px;
     }
 
     #skillDamage{
-        font-size:24px;
+        font-size:18px;
+    }
+
+    #skillEffect{
+        font-size:13px;
     }
 
 }
