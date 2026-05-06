@@ -315,11 +315,12 @@ button{
     </p>
 
     <p>
-        ★の数が多いほど危険！
+        HPが減るほど、
+        危険なワザが出やすくなる！
     </p>
 
     <p>
-        Ver 0.0.9
+        Ver 0.1.0
     </p>
 
     <button onclick="backToTitle()">
@@ -612,8 +613,51 @@ function enemyAction(){
 
             clearInterval(interval);
 
+            let starPool = [];
+
+            const hpRate = hp / maxHp;
+
+            /* =========================
+               HP割合で危険度変化
+            ========================= */
+
+            if(hpRate >= 0.7){
+
+                starPool = [
+                    1,1,1,1,
+                    2,2,2,
+                    3
+                ];
+
+            }
+            else if(hpRate >= 0.4){
+
+                starPool = [
+                    2,2,
+                    3,3,
+                    4,4,
+                    5
+                ];
+
+            }
+            else{
+
+                starPool = [
+                    3,
+                    4,4,
+                    5,5,
+                    6,6
+                ];
+
+            }
+
             const finalStar =
-                Math.floor(Math.random()*6)+1;
+                starPool[
+                    Math.floor(
+                        Math.random()
+                        * starPool.length
+                    )
+                ];
 
             roulette.innerText =
                 "★".repeat(finalStar) +
