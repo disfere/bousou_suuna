@@ -8,184 +8,258 @@
 
 <style>
 
-* {
-  box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: sans-serif;
-  color: white;
-  background: black;
+body{
+    margin:0;
+    font-family:sans-serif;
+    color:white;
+    overflow:hidden;
+    background:black;
 }
 
-/* 背景動画 */
-#bgVideo {
+/* =========================
+   背景動画
+========================= */
 
-  position: fixed;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  background: black;
-
-  z-index: -1;
+#bgVideo{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+    background:black;
 }
 
-/* 暗幕 */
-.overlay {
+/* =========================
+   共通画面
+========================= */
 
-  position: fixed;
+.screen{
+    width:100vw;
+    height:100vh;
 
-  inset: 0;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 
-  background: rgba(0,0,0,0.5);
-
-  z-index: -1;
+    padding:20px;
+    text-align:center;
 }
 
-/* 各画面 */
-.screen {
-
-  position: absolute;
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-
-  gap: 20px;
-
-  padding: 20px;
-
-  text-align: center;
+.active{
+    display:flex;
 }
 
-/* タイトル */
-.title {
+/* =========================
+   タイトル
+========================= */
 
-  font-size: 64px;
-  font-weight: bold;
+.title{
+    font-size:64px;
+    font-weight:bold;
 
-  text-shadow:
-    0 0 10px #ff66cc,
-    0 0 20px #ff66cc,
-    0 0 40px #ff66cc;
+    color:white;
+
+    text-shadow:
+        0 0 10px #ff00aa,
+        0 0 20px #ff00aa,
+        0 0 40px #ff00aa;
+
+    margin-bottom:40px;
 }
 
-/* ボタン */
-button {
+/* =========================
+   ボタン
+========================= */
 
-  font-size: 24px;
+button{
+    width:300px;
+    max-width:80vw;
 
-  padding: 15px 40px;
+    padding:18px;
 
-  border: none;
-  border-radius: 12px;
+    margin:12px;
 
-  cursor: pointer;
+    border:none;
+    border-radius:18px;
 
-  background: rgba(255,255,255,0.9);
+    font-size:28px;
+    font-weight:bold;
 
-  transition: 0.2s;
+    cursor:pointer;
 }
 
-button:hover {
-  transform: scale(1.05);
+/* =========================
+   HP
+========================= */
+
+#hpText{
+    font-size:42px;
+    margin-bottom:10px;
 }
 
-/* HP表示 */
-#hp {
+#hpBarWrap{
+    width:90%;
+    max-width:700px;
 
-  font-size: 42px;
-  font-weight: bold;
+    height:40px;
 
-  text-shadow: 0 0 10px red;
+    background:#333;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-bottom:40px;
 }
 
-/* 技表示 */
-#result {
+#hpBar{
+    width:100%;
+    height:100%;
 
-  font-size: 28px;
+    background:
+        linear-gradient(
+            90deg,
+            #ff0066,
+            #ff4444
+        );
 
-  min-height: 50px;
-
-  text-shadow: 0 0 10px black;
+    transition:0.4s;
 }
 
-/* ダメージ入力 */
-.damage-area {
+/* =========================
+   危険度ルーレット
+========================= */
 
-  display: flex;
+#roulette{
+    font-size:72px;
+    font-weight:bold;
 
-  gap: 10px;
+    margin-bottom:30px;
 
-  align-items: center;
-  justify-content: center;
+    text-shadow:
+        0 0 10px white,
+        0 0 20px white;
 
-  flex-wrap: wrap;
+    min-height:120px;
 }
 
-.damage-input {
+/* =========================
+   ワザ表示
+========================= */
 
-  width: 180px;
+#skillBox{
 
-  font-size: 28px;
+    width:90%;
+    max-width:800px;
 
-  padding: 12px;
+    background:
+        rgba(0,0,0,0.7);
 
-  border-radius: 10px;
-  border: none;
+    border:
+        3px solid white;
 
-  text-align: center;
+    border-radius:20px;
+
+    padding:25px;
+
+    margin-top:20px;
+
+    backdrop-filter: blur(4px);
 }
 
-/* リザルト */
-.result-text {
+#skillName{
+    font-size:48px;
+    font-weight:bold;
 
-  font-size: 32px;
-
-  text-shadow: 0 0 10px black;
+    margin-bottom:20px;
 }
 
-/* スマホ */
-@media (max-width: 768px) {
+#skillDamage{
+    font-size:40px;
 
-  .title {
-    font-size: 42px;
-  }
+    margin-bottom:20px;
+}
 
-  button {
-    width: 80%;
-    font-size: 20px;
-  }
+#skillEffect{
+    font-size:24px;
+    line-height:1.6;
+    opacity:0.9;
+}
 
-  #hp {
-    font-size: 32px;
-  }
+/* =========================
+   ダメージ入力
+========================= */
 
-  #result {
-    font-size: 22px;
-  }
+.damageArea{
+    margin-top:40px;
+}
 
-  .damage-input {
-    width: 140px;
-    font-size: 24px;
-  }
+.damageArea input{
+    width:200px;
 
-  .result-text {
-    font-size: 24px;
-  }
+    padding:12px;
+
+    font-size:28px;
+    text-align:center;
+
+    border-radius:12px;
+    border:none;
+}
+
+.damageArea button{
+    width:180px;
+}
+
+/* =========================
+   リザルト
+========================= */
+
+.resultTitle{
+    font-size:64px;
+    margin-bottom:40px;
+}
+
+.resultText{
+    font-size:36px;
+    margin:15px;
+}
+
+/* =========================
+   スマホ調整
+========================= */
+
+@media(max-width:700px){
+
+    .title{
+        font-size:48px;
+    }
+
+    #roulette{
+        font-size:48px;
+    }
+
+    #skillName{
+        font-size:34px;
+    }
+
+    #skillDamage{
+        font-size:30px;
+    }
+
+    #skillEffect{
+        font-size:20px;
+    }
+
+    button{
+        font-size:24px;
+    }
+
 }
 
 </style>
@@ -195,364 +269,442 @@ button:hover {
 
 <!-- 背景動画 -->
 <video autoplay muted loop playsinline id="bgVideo">
-  <source src="suuna_loop.mp4" type="video/mp4">
+    <source src="suuna_loop.mp4" type="video/mp4">
 </video>
 
-<!-- 暗幕 -->
-<div class="overlay"></div>
+<!-- =========================
+     タイトル画面
+========================= -->
 
-<!-- タイトル画面 -->
-<div id="titleScreen" class="screen">
+<div id="titleScreen" class="screen active">
 
-  <div class="title">
-    暴走スゥナ
-  </div>
+    <div class="title">
+        暴走スゥナ
+    </div>
 
-  <button onclick="showPlayerSelect()">
-    ゲームスタート
-  </button>
-
-  <button onclick="showRules()">
-    ルール説明
-  </button>
-
-</div>
-
-<!-- ルール画面 -->
-<div id="ruleScreen" class="screen" style="display:none;">
-
-  <h2>ルール説明</h2>
-
-  <p>
-    Ver 0.0.7
-  </p>
-
-  <p>
-    暴走したスゥナをみんなで倒そう！<br><br>
-
-    スゥナは毎ターン<br>
-    ランダムでワザを使用！<br><br>
-
-    プレイヤー側でダメージを計算し、<br>
-    アプリに入力してHPを減らそう！
-  </p>
-
-  <button onclick="backTitle()">
-    戻る
-  </button>
-
-</div>
-
-<!-- 人数選択画面 -->
-<div id="playerSelectScreen" class="screen" style="display:none;">
-
-  <h2>人数を選択</h2>
-
-  <button onclick="startGame(1500)">
-    １人用
-  </button>
-
-  <button onclick="startGame(3000)">
-    ２人用
-  </button>
-
-  <button onclick="backTitle()">
-    戻る
-  </button>
-
-</div>
-
-<!-- ゲーム画面 -->
-<div id="gameScreen" class="screen" style="display:none;">
-
-  <h2>GAME START</h2>
-
-  <div id="hp">
-    HP: 3000
-  </div>
-
-  <!-- ダメージ入力 -->
-  <div class="damage-area">
-
-    <input
-      type="number"
-      id="damageInput"
-      class="damage-input"
-      placeholder="ダメージ"
-    >
-
-    <button onclick="applyDamage()">
-      OK
+    <button onclick="showDifficulty()">
+        ゲームスタート
     </button>
 
-  </div>
-
-  <!-- 敵行動 -->
-  <button onclick="attack()">
-    敵の行動
-  </button>
-
-  <div id="result"></div>
+    <button onclick="showRules()">
+        ルール説明
+    </button>
 
 </div>
 
-<!-- リザルト画面 -->
-<div id="resultScreen" class="screen" style="display:none;">
+<!-- =========================
+     ルール画面
+========================= -->
 
-  <h1>RESULT</h1>
+<div id="ruleScreen" class="screen">
 
-  <div
-    id="maxDamageResult"
-    class="result-text"
-  ></div>
+    <h1>ルール説明</h1>
 
-  <div
-    id="turnResult"
-    class="result-text"
-  ></div>
+    <p>
+        暴走スゥナの攻撃に耐えながら、<br>
+        協力してHPを削り切れ！
+    </p>
 
-  <button onclick="backTitle()">
-    タイトルへ戻る
-  </button>
+    <p>
+        敵行動ボタンを押すと、<br>
+        危険度ルーレットが回転！
+    </p>
+
+    <p>
+        ★の数が多いほど危険！
+    </p>
+
+    <p>
+        Ver 0.0.8
+    </p>
+
+    <button onclick="backToTitle()">
+        タイトルへ戻る
+    </button>
+
+</div>
+
+<!-- =========================
+     難易度選択
+========================= -->
+
+<div id="difficultyScreen" class="screen">
+
+    <h1>人数選択</h1>
+
+    <button onclick="startGame(1500)">
+        1人用（HP1500）
+    </button>
+
+    <button onclick="startGame(3000)">
+        2人用（HP3000）
+    </button>
+
+</div>
+
+<!-- =========================
+     ゲーム画面
+========================= -->
+
+<div id="gameScreen" class="screen">
+
+    <div id="hpText">
+        HP 3000 / 3000
+    </div>
+
+    <div id="hpBarWrap">
+        <div id="hpBar"></div>
+    </div>
+
+    <div id="roulette">
+        ★☆☆☆☆☆
+    </div>
+
+    <button onclick="enemyAction()">
+        敵の行動
+    </button>
+
+    <div id="skillBox">
+
+        <div id="skillName">
+            ---
+        </div>
+
+        <div id="skillDamage">
+            ---
+        </div>
+
+        <div id="skillEffect">
+            ---
+        </div>
+
+    </div>
+
+    <div class="damageArea">
+
+        <input
+            type="number"
+            id="damageInput"
+            placeholder="ダメージ">
+
+        <br>
+
+        <button onclick="applyDamage()">
+            OK
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     リザルト
+========================= -->
+
+<div id="resultScreen" class="screen">
+
+    <div class="resultTitle">
+        RESULT
+    </div>
+
+    <div class="resultText" id="maxDamageText">
+        最大ダメージ：0
+    </div>
+
+    <div class="resultText" id="turnText">
+        ターン数：0
+    </div>
+
+    <button onclick="backToTitle()">
+        タイトルに戻る
+    </button>
 
 </div>
 
 <script>
 
 /* =========================
-   基本データ
+   データ
 ========================= */
 
+let maxHp = 3000;
 let hp = 3000;
 
+let turnCount = 0;
 let maxDamage = 0;
 
-let turnCount = 0;
+/* =========================
+   ワザデータ
+========================= */
 
-/* 技一覧 */
-const moves = [
+const skills = {
 
-  {
-    name: "かみつく",
-    damage: 20
-  },
+    1:[
+        {
+            name:"狂気ノ爪",
+            damage:100,
+            effect:"追加効果なし"
+        }
+    ],
 
-  {
-    name: "れんぞくビンタ",
-    damage: 40
-  },
+    2:[
+        {
+            name:"歪曲ノ波動",
+            damage:180,
+            effect:"次のターン、回復量半減"
+        }
+    ],
 
-  {
-    name: "だいばくはつ",
-    damage: 100
-  },
+    3:[
+        {
+            name:"暴走連撃",
+            damage:250,
+            effect:"ランダムなプレイヤー追加50ダメージ"
+        }
+    ],
 
-  {
-    name: "いやしのひかり",
-    heal: 50
-  }
+    4:[
+        {
+            name:"崩壊ノ叫ビ",
+            damage:350,
+            effect:"全プレイヤーに状態異常"
+        }
+    ],
 
-];
+    5:[
+        {
+            name:"終焉ノ断罪",
+            damage:500,
+            effect:"次ターン、特殊エネルギー無効"
+        }
+    ],
+
+    6:[
+        {
+            name:"暴走因子解放",
+            damage:700,
+            effect:"次ターン、敵ダメージ+200"
+        }
+    ]
+
+};
 
 /* =========================
    画面切替
 ========================= */
 
-function hideAll() {
+function hideAllScreens(){
 
-  document.getElementById("titleScreen").style.display =
-    "none";
+    document.querySelectorAll(".screen")
+    .forEach(screen=>{
+        screen.classList.remove("active");
+    });
 
-  document.getElementById("ruleScreen").style.display =
-    "none";
-
-  document.getElementById("playerSelectScreen").style.display =
-    "none";
-
-  document.getElementById("gameScreen").style.display =
-    "none";
-
-  document.getElementById("resultScreen").style.display =
-    "none";
 }
 
-function backTitle() {
+function backToTitle(){
 
-  hideAll();
+    hideAllScreens();
 
-  document.getElementById("titleScreen").style.display =
-    "flex";
+    document
+    .getElementById("titleScreen")
+    .classList.add("active");
+
 }
 
-function showRules() {
+function showRules(){
 
-  hideAll();
+    hideAllScreens();
 
-  document.getElementById("ruleScreen").style.display =
-    "flex";
+    document
+    .getElementById("ruleScreen")
+    .classList.add("active");
+
 }
 
-function showPlayerSelect() {
+function showDifficulty(){
 
-  hideAll();
+    hideAllScreens();
 
-  document.getElementById("playerSelectScreen").style.display =
-    "flex";
+    document
+    .getElementById("difficultyScreen")
+    .classList.add("active");
+
 }
 
 /* =========================
    ゲーム開始
 ========================= */
 
-function startGame(startHP) {
+function startGame(startHp){
 
-  hp = startHP;
+    maxHp = startHp;
+    hp = startHp;
 
-  maxDamage = 0;
+    turnCount = 0;
+    maxDamage = 0;
 
-  turnCount = 0;
+    updateHpBar();
 
-  updateHP();
+    hideAllScreens();
 
-  document.getElementById("result").innerText = "";
+    document
+    .getElementById("gameScreen")
+    .classList.add("active");
 
-  document.getElementById("damageInput").value = "";
-
-  hideAll();
-
-  document.getElementById("gameScreen").style.display =
-    "flex";
 }
 
 /* =========================
    HP更新
 ========================= */
 
-function updateHP() {
+function updateHpBar(){
 
-  if (hp < 0) {
-    hp = 0;
-  }
+    document.getElementById("hpText")
+    .innerText =
+        `HP ${hp} / ${maxHp}`;
 
-  document.getElementById("hp").innerText =
-    "HP: " + hp;
-}
+    const percent =
+        (hp / maxHp) * 100;
 
-/* =========================
-   ダメージ適用
-========================= */
+    document.getElementById("hpBar")
+    .style.width =
+        percent + "%";
 
-function applyDamage() {
-
-  const input =
-    document.getElementById("damageInput");
-
-  const damage =
-    Number(input.value);
-
-  /* 入力チェック */
-  if (!damage || damage <= 0) {
-    return;
-  }
-
-  /* HP減少 */
-  hp -= damage;
-
-  /* 0未満防止 */
-  if (hp < 0) {
-    hp = 0;
-  }
-
-  /* ターン数 */
-  turnCount++;
-
-  /* 最大ダメージ更新 */
-  if (damage > maxDamage) {
-    maxDamage = damage;
-  }
-
-  /* HP更新 */
-  updateHP();
-
-  /* 入力欄クリア */
-  input.value = "";
-
-  /* 撃破判定 */
-  if (hp <= 0) {
-
-    document.getElementById("result").innerText =
-      "暴走スゥナを倒した！";
-
-    showResultScreen();
-
-    return;
-  }
-
-  /* 通常時 */
-  document.getElementById("result").innerText =
-    damage + "ダメージ与えた！";
 }
 
 /* =========================
    敵行動
 ========================= */
 
-function attack() {
+function enemyAction(){
 
-  /* HP0なら動かない */
-  if (hp <= 0) {
-    return;
-  }
+    const roulette =
+        document.getElementById("roulette");
 
-  /* ランダム抽選 */
-  const move =
-    moves[Math.floor(Math.random() * moves.length)];
+    let count = 0;
 
-  let text = move.name + "！ ";
+    const interval = setInterval(()=>{
 
-  /* ダメージ技 */
-  if (move.damage) {
+        const star =
+            Math.floor(Math.random()*6)+1;
 
-    text +=
-      "プレイヤーに" +
-      move.damage +
-      "ダメージ！";
-  }
+        roulette.innerText =
+            "★".repeat(star) +
+            "☆".repeat(6-star);
 
-  /* 回復技 */
-  if (move.heal) {
+        count++;
 
-    hp += move.heal;
+        if(count >= 20){
 
-    text +=
-      "暴走スゥナは" +
-      move.heal +
-      "回復した！";
+            clearInterval(interval);
 
-    updateHP();
-  }
+            const finalStar =
+                Math.floor(Math.random()*6)+1;
 
-  document.getElementById("result").innerText =
-    text;
+            roulette.innerText =
+                "★".repeat(finalStar) +
+                "☆".repeat(6-finalStar);
+
+            showSkill(finalStar);
+
+        }
+
+    },100);
+
 }
 
 /* =========================
-   リザルト表示
+   ワザ表示
 ========================= */
 
-function showResultScreen() {
+function showSkill(level){
 
-  document.getElementById("gameScreen").style.display =
-    "none";
+    const list = skills[level];
 
-  document.getElementById("resultScreen").style.display =
-    "flex";
+    const skill =
+        list[
+            Math.floor(
+                Math.random()*list.length
+            )
+        ];
 
-  document.getElementById("maxDamageResult").innerText =
-    "最大ダメージ： " + maxDamage;
+    document.getElementById("skillName")
+    .innerText =
+        skill.name;
 
-  document.getElementById("turnResult").innerText =
-    "ターン数： " + turnCount;
+    document.getElementById("skillDamage")
+    .innerText =
+        skill.damage + " ダメージ";
+
+    document.getElementById("skillEffect")
+    .innerText =
+        skill.effect;
+
+}
+
+/* =========================
+   ダメージ処理
+========================= */
+
+function applyDamage(){
+
+    const input =
+        document.getElementById("damageInput");
+
+    const damage =
+        Number(input.value);
+
+    if(!damage || damage <= 0){
+        return;
+    }
+
+    hp -= damage;
+
+    if(hp < 0){
+        hp = 0;
+    }
+
+    turnCount++;
+
+    if(damage > maxDamage){
+        maxDamage = damage;
+    }
+
+    updateHpBar();
+
+    input.value = "";
+
+    if(hp <= 0){
+
+        showResult();
+
+    }
+
+}
+
+/* =========================
+   リザルト
+========================= */
+
+function showResult(){
+
+    hideAllScreens();
+
+    document
+    .getElementById("resultScreen")
+    .classList.add("active");
+
+    document
+    .getElementById("maxDamageText")
+    .innerText =
+        "最大ダメージ：" + maxDamage;
+
+    document
+    .getElementById("turnText")
+    .innerText =
+        "ターン数：" + turnCount;
+
 }
 
 </script>
