@@ -461,7 +461,7 @@ function applyDamage() {
     maxDamage = damage;
   }
 
-  /* HP表示更新 */
+  /* HP更新 */
   updateHP();
 
   /* 入力欄クリア */
@@ -473,12 +473,7 @@ function applyDamage() {
     document.getElementById("result").innerText =
       "暴走スゥナを倒した！";
 
-    /* 1秒後にリザルト */
-    setTimeout(() => {
-
-      showResultScreen();
-
-    }, 1000);
+    showResultScreen();
 
     return;
   }
@@ -537,7 +532,8 @@ function attack() {
 
 function showResultScreen() {
 
-  hideAll();
+  document.getElementById("gameScreen").style.display =
+    "none";
 
   document.getElementById("resultScreen").style.display =
     "flex";
