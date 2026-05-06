@@ -188,30 +188,43 @@ button{
 }
 
 /* =========================
-   ★ルーレット
-========================= */
-
-#roulette{
-
-    font-size:28px;
-    font-weight:bold;
-
-    margin-top:10px;
-
-    min-height:40px;
-
-    text-shadow:
-        0 0 10px white,
-        0 0 20px white;
-}
-
-/* =========================
    ゲーム画面
 ========================= */
 
 #gameScreen{
     justify-content:flex-end;
     padding-bottom:40px;
+}
+
+/* =========================
+   ★ルーレットオーバーレイ
+========================= */
+
+#rouletteOverlay{
+
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:
+        rgba(0,0,0,0.45);
+
+    z-index:997;
+}
+
+#roulette{
+
+    font-size:64px;
+    font-weight:bold;
+
+    text-shadow:
+        0 0 10px white,
+        0 0 20px white,
+        0 0 40px white;
 }
 
 /* =========================
@@ -395,10 +408,6 @@ button{
 
 }
 
-/* =========================
-   スマホ
-========================= */
-
 @media(max-width:700px){
 
     .title{
@@ -413,6 +422,10 @@ button{
         font-size:30px;
     }
 
+    #roulette{
+        font-size:44px;
+    }
+
 }
 
 </style>
@@ -425,10 +438,7 @@ button{
     <source src="suuna_loop.mp4" type="video/mp4">
 </video>
 
-<!-- =========================
-     タイトル
-========================= -->
-
+<!-- タイトル -->
 <div id="titleScreen" class="screen active">
 
     <div class="title">
@@ -445,10 +455,7 @@ button{
 
 </div>
 
-<!-- =========================
-     ルール
-========================= -->
-
+<!-- ルール -->
 <div id="ruleScreen" class="screen">
 
     <h1>ルール説明</h1>
@@ -458,7 +465,7 @@ button{
     </p>
 
     <p>
-        Ver 0.2.0
+        Ver 0.2.1
     </p>
 
     <button onclick="backToTitle()">
@@ -467,10 +474,7 @@ button{
 
 </div>
 
-<!-- =========================
-     難易度
-========================= -->
-
+<!-- 難易度 -->
 <div id="difficultyScreen" class="screen">
 
     <h1>人数選択</h1>
@@ -485,18 +489,13 @@ button{
 
 </div>
 
-<!-- =========================
-     ゲーム
-========================= -->
-
+<!-- ゲーム -->
 <div id="gameScreen" class="screen">
 
-    <!-- ターン -->
     <div id="turnDisplay">
         プレイヤーターン
     </div>
 
-    <!-- HP -->
     <div id="hpText">
         HP 3000 / 3000
     </div>
@@ -505,7 +504,7 @@ button{
         <div id="hpBar"></div>
     </div>
 
-    <!-- プレイヤーUI -->
+    <!-- プレイヤー -->
     <div id="playerArea">
 
         <div class="damageArea">
@@ -529,7 +528,7 @@ button{
 
     </div>
 
-    <!-- 敵UI -->
+    <!-- 敵 -->
     <div id="enemyArea" style="display:none;">
 
         <button
@@ -551,17 +550,18 @@ button{
 
     </div>
 
-    <!-- ★ -->
+</div>
+
+<!-- ★ルーレット -->
+<div id="rouletteOverlay">
+
     <div id="roulette">
         ★☆☆☆☆☆
     </div>
 
 </div>
 
-<!-- =========================
-     技カットイン
-========================= -->
-
+<!-- 技カットイン -->
 <div id="cutinOverlay">
 
     <div id="cutinText">
@@ -570,10 +570,7 @@ button{
 
 </div>
 
-<!-- =========================
-     技オーバーレイ
-========================= -->
-
+<!-- 技オーバーレイ -->
 <div id="skillOverlay">
 
     <div id="overlayCard">
@@ -598,10 +595,7 @@ button{
 
 </div>
 
-<!-- =========================
-     リザルト
-========================= -->
-
+<!-- リザルト -->
 <div id="resultScreen" class="screen">
 
     <div class="resultTitle">
@@ -865,7 +859,7 @@ function updateHpBar(){
 }
 
 /* =========================
-   ターンUI更新
+   ターンUI
 ========================= */
 
 function updateTurnUI(){
@@ -1014,6 +1008,10 @@ function endEnemyTurn(){
 
 function enemyAction(){
 
+    document.getElementById(
+        "rouletteOverlay"
+    ).style.display = "flex";
+
     const roulette =
         document.getElementById("roulette");
 
@@ -1080,7 +1078,15 @@ function enemyAction(){
                 "★".repeat(finalStar) +
                 "☆".repeat(6-finalStar);
 
-            showSkill(finalStar);
+            setTimeout(()=>{
+
+                document.getElementById(
+                    "rouletteOverlay"
+                ).style.display = "none";
+
+                showSkill(finalStar);
+
+            },500);
 
         }
 
