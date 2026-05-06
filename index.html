@@ -25,13 +25,29 @@ body{
 ========================= */
 
 #bgVideo{
+
     position:fixed;
     inset:0;
+
     width:100%;
     height:100%;
+
     object-fit:cover;
+
     z-index:-1;
+
     background:black;
+
+    transition:opacity 1s;
+}
+
+/* フェード用 */
+.fadeOut{
+    opacity:0;
+}
+
+.fadeIn{
+    opacity:1;
 }
 
 /* =========================
@@ -47,7 +63,7 @@ body{
     justify-content:center;
     align-items:center;
 
-    padding:10px;
+    padding:15px;
 
     text-align:center;
 }
@@ -61,7 +77,7 @@ body{
 ========================= */
 
 .title{
-    font-size:36px;
+    font-size:52px;
     font-weight:bold;
 
     color:white;
@@ -71,7 +87,7 @@ body{
         0 0 20px #ff00aa,
         0 0 40px #ff00aa;
 
-    margin-bottom:20px;
+    margin-bottom:30px;
 }
 
 /* =========================
@@ -79,17 +95,17 @@ body{
 ========================= */
 
 button{
-    width:180px;
+    width:260px;
     max-width:80vw;
 
-    padding:10px;
+    padding:16px;
 
-    margin:6px;
+    margin:10px;
 
     border:none;
-    border-radius:12px;
+    border-radius:18px;
 
-    font-size:18px;
+    font-size:24px;
     font-weight:bold;
 
     cursor:pointer;
@@ -100,8 +116,8 @@ button{
 ========================= */
 
 #hpText{
-    font-size:22px;
-    margin-bottom:8px;
+    font-size:30px;
+    margin-bottom:10px;
 
     text-shadow:
         0 0 10px black;
@@ -110,9 +126,9 @@ button{
 #hpBarWrap{
 
     width:90%;
-    max-width:500px;
+    max-width:600px;
 
-    height:16px;
+    height:24px;
 
     background:#333;
 
@@ -120,7 +136,7 @@ button{
 
     overflow:hidden;
 
-    margin-bottom:14px;
+    margin-bottom:20px;
 }
 
 #hpBar{
@@ -142,24 +158,24 @@ button{
 ========================= */
 
 .damageArea{
-    margin-bottom:10px;
+    margin-bottom:15px;
 }
 
 .damageArea input{
 
-    width:120px;
+    width:180px;
 
-    padding:8px;
+    padding:12px;
 
-    font-size:20px;
+    font-size:28px;
     text-align:center;
 
     border:none;
-    border-radius:10px;
+    border-radius:12px;
 }
 
 .damageArea button{
-    width:120px;
+    width:180px;
 }
 
 /* =========================
@@ -168,7 +184,7 @@ button{
 
 #enemyButton{
     margin-top:0;
-    margin-bottom:10px;
+    margin-bottom:15px;
 }
 
 /* =========================
@@ -177,12 +193,12 @@ button{
 
 #roulette{
 
-    font-size:28px;
+    font-size:42px;
     font-weight:bold;
 
-    margin-bottom:12px;
+    margin-bottom:20px;
 
-    min-height:40px;
+    min-height:60px;
 
     text-shadow:
         0 0 10px white,
@@ -190,77 +206,47 @@ button{
 }
 
 /* =========================
-   ゲーム画面
+   ワザ表示
 ========================= */
 
-#gameScreen{
-    justify-content:flex-end;
-    padding-bottom:40px;
-}
+#skillBox{
 
-/* =========================
-   技オーバーレイ
-========================= */
-
-#skillOverlay{
-
-    position:fixed;
-    inset:0;
-
-    display:none;
-
-    justify-content:center;
-    align-items:center;
+    width:92%;
+    max-width:700px;
 
     background:
-        rgba(0,0,0,0.6);
-
-    z-index:999;
-}
-
-#overlayCard{
-
-    width:90%;
-    max-width:520px;
-
-    background:
-        rgba(20,20,20,0.92);
+        rgba(0,0,0,0.55);
 
     border:
-        2px solid white;
+        3px solid white;
 
-    border-radius:24px;
+    border-radius:20px;
 
-    padding:24px;
+    padding:15px;
 
-    text-align:center;
-
-    animation:
-        popup 0.25s ease;
+    backdrop-filter: blur(4px);
 }
 
-#overlaySkillName{
+#skillName{
 
-    font-size:30px;
+    font-size:34px;
     font-weight:bold;
 
-    margin-bottom:14px;
+    margin-bottom:15px;
 }
 
-#overlaySkillDamage{
+#skillDamage{
 
-    font-size:24px;
+    font-size:28px;
 
-    margin-bottom:14px;
+    margin-bottom:15px;
 }
 
-#overlaySkillEffect{
+#skillEffect{
 
-    font-size:16px;
+    font-size:18px;
 
     line-height:1.6;
-
-    margin-bottom:20px;
 }
 
 /* =========================
@@ -268,31 +254,13 @@ button{
 ========================= */
 
 .resultTitle{
-    font-size:40px;
-    margin-bottom:20px;
+    font-size:52px;
+    margin-bottom:30px;
 }
 
 .resultText{
-    font-size:22px;
-    margin:8px;
-}
-
-/* =========================
-   ポップ演出
-========================= */
-
-@keyframes popup{
-
-    from{
-        transform:scale(0.85);
-        opacity:0;
-    }
-
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
-
+    font-size:28px;
+    margin:10px;
 }
 
 /* =========================
@@ -302,23 +270,19 @@ button{
 @media(max-width:700px){
 
     .title{
-        font-size:30px;
+        font-size:42px;
     }
 
     button{
-        font-size:16px;
+        font-size:22px;
     }
 
-    #overlaySkillName{
+    #skillName{
+        font-size:28px;
+    }
+
+    #skillDamage{
         font-size:24px;
-    }
-
-    #overlaySkillDamage{
-        font-size:20px;
-    }
-
-    #overlaySkillEffect{
-        font-size:14px;
     }
 
 }
@@ -329,8 +293,18 @@ button{
 <body>
 
 <!-- 背景動画 -->
-<video autoplay muted loop playsinline id="bgVideo">
-    <source src="suuna_loop.mp4" type="video/mp4">
+<video
+    autoplay
+    muted
+    loop
+    playsinline
+    id="bgVideo"
+    class="fadeIn">
+
+    <source
+        src="suuna_loop.mp4"
+        type="video/mp4">
+
 </video>
 
 <!-- =========================
@@ -372,7 +346,7 @@ button{
     </p>
 
     <p>
-        Ver 0.1.0
+        Ver 0.1.1
     </p>
 
     <button onclick="backToTitle()">
@@ -444,31 +418,20 @@ button{
         ★☆☆☆☆☆
     </div>
 
-</div>
+    <!-- ワザ表示 -->
+    <div id="skillBox">
 
-<!-- =========================
-     技オーバーレイ
-========================= -->
-
-<div id="skillOverlay">
-
-    <div id="overlayCard">
-
-        <div id="overlaySkillName">
+        <div id="skillName">
             ---
         </div>
 
-        <div id="overlaySkillDamage">
+        <div id="skillDamage">
             ---
         </div>
 
-        <div id="overlaySkillEffect">
+        <div id="skillEffect">
             ---
         </div>
-
-        <button onclick="closeSkillOverlay()">
-            OK
-        </button>
 
     </div>
 
@@ -518,53 +481,83 @@ const skills = {
 
     1:[
         {
-            name:"どうして止めるの？",
+            name:"狂気ノ爪",
             damage:100,
-            effect:"ベンチポケモンにも30ダメージ（どのポケモンにするかはプレイヤーが選んでよい。）"
+            effect:"追加効果なし"
         }
     ],
 
     2:[
         {
-            name:"あなたも欲しいんでしょう？",
-            damage:40,
-            effect:"攻撃を受けるプレイヤーの場のエネルギーの数×40ダメージ。"
+            name:"歪曲ノ波動",
+            damage:180,
+            effect:"次のターン、回復量半減"
         }
     ],
 
     3:[
         {
-            name:"ぜんぶ引けば解決するよ？",
-            damage:130,
-            effect:"すべてのプレイヤーは手札をウラにして切り山札の下にもどす。その後、山札を５枚ひく。"
+            name:"暴走連撃",
+            damage:250,
+            effect:"ランダムなプレイヤー追加50ダメージ"
         }
     ],
 
     4:[
         {
-            name:"まだ終われないよ",
-            damage:180,
-            effect:"このワザを２回使う。（いわゆる「おまつりおんど」）"
+            name:"崩壊ノ叫ビ",
+            damage:350,
+            effect:"全プレイヤーに状態異常"
         }
     ],
 
     5:[
         {
-            name:"あなたは選ばれたんだよ",
-            damage:250,
-            effect:"このワザを受けたプレイヤーはコインを投げる。おもてならベンチポケモンすべてに150ダメージ。"
+            name:"終焉ノ断罪",
+            damage:500,
+            effect:"次ターン、特殊エネルギー無効"
         }
     ],
 
     6:[
         {
-            name:"その一枚が、終わりになる",
-            damage:350,
-            effect:"このワザを受けたプレイヤーは手札をすべてトラッシュする。その後、山札を１枚ひく。"
+            name:"暴走因子解放",
+            damage:700,
+            effect:"次ターン、敵ダメージ+200"
         }
     ]
 
 };
+
+/* =========================
+   背景動画切替
+========================= */
+
+function changeBackgroundVideo(fileName){
+
+    const video =
+        document.getElementById("bgVideo");
+
+    video.classList.remove("fadeIn");
+    video.classList.add("fadeOut");
+
+    setTimeout(()=>{
+
+        video.pause();
+
+        video.innerHTML =
+            `<source src="${fileName}" type="video/mp4">`;
+
+        video.load();
+
+        video.play();
+
+        video.classList.remove("fadeOut");
+        video.classList.add("fadeIn");
+
+    },1000);
+
+}
 
 /* =========================
    画面切替
@@ -580,6 +573,11 @@ function hideAllScreens(){
 }
 
 function backToTitle(){
+
+    /* 背景戻す */
+    changeBackgroundVideo(
+        "suuna_loop.mp4"
+    );
 
     hideAllScreens();
 
@@ -680,10 +678,6 @@ function enemyAction(){
 
             const hpRate = hp / maxHp;
 
-            /* =========================
-               HP割合で危険度変化
-            ========================= */
-
             if(hpRate >= 0.7){
 
                 starPool = [
@@ -749,36 +743,17 @@ function showSkill(level){
             )
         ];
 
-    document.getElementById(
-        "overlaySkillName"
-    ).innerText =
+    document.getElementById("skillName")
+    .innerText =
         skill.name;
 
-    document.getElementById(
-        "overlaySkillDamage"
-    ).innerText =
+    document.getElementById("skillDamage")
+    .innerText =
         skill.damage + " ダメージ";
 
-    document.getElementById(
-        "overlaySkillEffect"
-    ).innerText =
+    document.getElementById("skillEffect")
+    .innerText =
         skill.effect;
-
-    document.getElementById(
-        "skillOverlay"
-    ).style.display = "flex";
-
-}
-
-/* =========================
-   オーバーレイ閉じる
-========================= */
-
-function closeSkillOverlay(){
-
-    document.getElementById(
-        "skillOverlay"
-    ).style.display = "none";
 
 }
 
@@ -827,6 +802,11 @@ function applyDamage(){
 ========================= */
 
 function showResult(){
+
+    /* 背景変更 */
+    changeBackgroundVideo(
+        "suuna_clear.mp4"
+    );
 
     hideAllScreens();
 
