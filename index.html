@@ -246,6 +246,10 @@ button{
 
 #roulette{
 
+    width:100%;
+
+    text-align:center;
+
     font-size:64px;
     font-weight:bold;
 
@@ -1119,8 +1123,7 @@ function enemyAction(){
             Math.floor(Math.random()*6)+1;
 
         roulette.innerText =
-            "★".repeat(star) +
-            "☆".repeat(6-star);
+            "★".repeat(star)
 
         count++;
 
@@ -1171,8 +1174,7 @@ function enemyAction(){
                 ];
 
             roulette.innerText =
-                "★".repeat(finalStar) +
-                "☆".repeat(6-finalStar);
+                "★".repeat(finalStar)
 
             setTimeout(()=>{
 
