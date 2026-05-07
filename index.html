@@ -1293,28 +1293,13 @@ function applyDamage(){
 
 function showFailed(){
 
-    const video =
-        document.getElementById(
-            "bgVideo"
-        );
-
-    video.classList.remove(
-        "fadeIn"
-    );
-
-    video.classList.add(
-        "fadeOut"
+    changeBackgroundVideo(
+        "suuna_failed.mp4"
     );
 
     setTimeout(()=>{
 
-        video.style.display =
-            "none";
-
         hideAllScreens();
-
-        document.body.style.background =
-            "black";
 
         document
         .getElementById(
