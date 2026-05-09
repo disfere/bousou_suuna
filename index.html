@@ -1419,50 +1419,79 @@ function enemyAction(){
     ).style.display = "flex";
 
     const roulette =
-        document.getElementById("roulette");
+        document.getElementById(
+            "roulette"
+        );
 
-    let count = 0;
+    let step = 0;
 
-    const interval = setInterval(()=>{
+    function roll(){
 
         const star =
             Math.floor(Math.random()*6)+1;
 
         roulette.innerText =
-            "★".repeat(star)
+            "★".repeat(star);
 
-        count++;
+        step++;
 
-        if(count >= 20){
+        /* 徐々に遅く */
 
-            clearInterval(interval);
+        let speed = 60;
+
+        if(step > 10){
+            speed = 90;
+        }
+
+        if(step > 18){
+            speed = 140;
+        }
+
+        if(step > 24){
+            speed = 220;
+        }
+
+        if(step > 28){
+            speed = 320;
+        }
+
+        /* 停止 */
+
+        if(step >= 30){
 
             let starPool = [];
 
-            const hpRate = hp / maxHp;
+            const hpRate =
+                hp / maxHp;
 
             if(hpRate >= 0.8){
 
-                starPool = [1,1,1,1,1,2,2,2,3,3];
+                starPool =
+                [1,1,1,1,1,2,2,2,3,3];
 
             }
             else if(hpRate >= 0.6){
 
-                starPool = [1,1,2,2,3,3,3,3,4,4];
+                starPool =
+                [1,1,2,2,3,3,3,3,4,4];
 
             }
             else if(hpRate >= 0.4){
 
-                starPool = [2,3,3,3,3,4,4,4,4,4];
+                starPool =
+                [2,3,3,3,3,4,4,4,4,4];
 
             }
             else if(hpRate >= 0.2){
 
-                starPool = [3,4,4,4,5,5,5,5,5,6];
+                starPool =
+                [3,4,4,4,5,5,5,5,5,6];
+
             }
             else{
 
-                starPool = [4,4,5,5,5,6,6,6,6,6];
+                starPool =
+                [4,4,5,5,5,6,6,6,6,6];
 
             }
 
@@ -1474,8 +1503,24 @@ function enemyAction(){
                     )
                 ];
 
+            /* 最終停止 */
+
             roulette.innerText =
-                "★".repeat(finalStar)
+                "★".repeat(finalStar);
+
+            /* ★6だけ赤く */
+
+            if(finalStar === 6){
+
+                roulette.style.color =
+                    "#ff4444";
+
+            }else{
+
+                roulette.style.color =
+                    "white";
+
+            }
 
             setTimeout(()=>{
 
@@ -1485,11 +1530,17 @@ function enemyAction(){
 
                 showSkill(finalStar);
 
-            },500);
+            },700);
+
+            return;
 
         }
 
-    },100);
+        setTimeout(roll, speed);
+
+    }
+
+    roll();
 
 }
 
