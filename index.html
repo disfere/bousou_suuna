@@ -497,6 +497,136 @@ button{
 
 }
 
+/* =========================
+   ダメージ・回復演出
+========================= */
+
+#effectOverlay{
+
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:2000;
+
+    pointer-events:none;
+}
+
+#effectNumber{
+
+    font-size:120px;
+    font-weight:bold;
+
+    opacity:0;
+
+    transform:
+        translateY(40px)
+        scale(0.8);
+
+    text-shadow:
+        0 0 20px black;
+
+}
+
+/* ダメージ */
+
+.damageFlash{
+
+    animation:
+        damageFlashAnim 0.5s ease;
+}
+
+.damageNumber{
+
+    color:#ff3333;
+
+    animation:
+        damageNumberAnim 1s ease;
+}
+
+/* 回復 */
+
+.healFlash{
+
+    animation:
+        healFlashAnim 0.5s ease;
+}
+
+.healNumber{
+
+    color:#00ff88;
+
+    animation:
+        damageNumberAnim 1s ease;
+}
+
+/* 赤フラッシュ */
+
+@keyframes damageFlashAnim{
+
+    0%{
+        background:rgba(255,0,0,0);
+    }
+
+    30%{
+        background:rgba(255,0,0,0.35);
+    }
+
+    100%{
+        background:rgba(255,0,0,0);
+    }
+
+}
+
+/* 緑フラッシュ */
+
+@keyframes healFlashAnim{
+
+    0%{
+        background:rgba(0,255,120,0);
+    }
+
+    30%{
+        background:rgba(0,255,120,0.35);
+    }
+
+    100%{
+        background:rgba(0,255,120,0);
+    }
+
+}
+
+/* 数字 */
+
+@keyframes damageNumberAnim{
+
+    0%{
+        opacity:0;
+        transform:
+            translateY(40px)
+            scale(0.7);
+    }
+
+    20%{
+        opacity:1;
+        transform:
+            translateY(0)
+            scale(1.1);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateY(-60px)
+            scale(1);
+    }
+
+}
+
 </style>
 </head>
 
@@ -704,6 +834,15 @@ button{
     <button onclick="backToTitle()">
         タイトルに戻る
     </button>
+
+</div>
+
+<!-- ダメージ＆回復演出 -->
+<div id="effectOverlay">
+
+    <div id="effectNumber">
+        -100
+    </div>
 
 </div>
 
@@ -1267,11 +1406,17 @@ function showSkill(level){
 
         hp += skill.recovery;
 
+        showEffect(
+            "heal",
+            skill.recovery
+        );
+
         if(hp > maxHp){
             hp = maxHp;
         }
 
         updateHpBar();
+	
 
     }
 
@@ -1336,6 +1481,8 @@ function applyDamage(){
     }
 
     hp -= damage;
+
+    showEffect("damage", damage);
 
     if(hp < 0){
         hp = 0;
@@ -1406,6 +1553,72 @@ function showResult(){
     .getElementById("turnText")
     .innerText =
         "ターン数：" + (turnCount - 1);
+
+}
+
+/* =========================
+   ダメージ・回復演出
+========================= */
+
+function showEffect(type, value){
+
+    const overlay =
+        document.getElementById(
+            "effectOverlay"
+        );
+
+    const number =
+        document.getElementById(
+            "effectNumber"
+        );
+
+    overlay.classList.remove(
+        "damageFlash",
+        "healFlash"
+    );
+
+    number.classList.remove(
+        "damageNumber",
+        "healNumber"
+    );
+
+    overlay.style.display =
+        "flex";
+
+    if(type === "damage"){
+
+        overlay.classList.add(
+            "damageFlash"
+        );
+
+        number.classList.add(
+            "damageNumber"
+        );
+
+        number.innerText =
+            "-" + value;
+
+    }else{
+
+        overlay.classList.add(
+            "healFlash"
+        );
+
+        number.classList.add(
+            "healNumber"
+        );
+
+        number.innerText =
+            "+" + value;
+
+    }
+
+    setTimeout(()=>{
+
+        overlay.style.display =
+            "none";
+
+    },1000);
 
 }
 
