@@ -159,7 +159,56 @@ button{
             #ff4444
         );
 
-    transition:0.4s;
+    transition:
+        width 0.4s,
+        background 0.4s;
+}
+
+/* HP段階色 */
+
+.hpGreen{
+    background:
+        linear-gradient(
+            90deg,
+            #00ff88,
+            #00cc66
+        );
+}
+
+.hpYellowGreen{
+    background:
+        linear-gradient(
+            90deg,
+            #99ff33,
+            #66cc22
+        );
+}
+
+.hpYellow{
+    background:
+        linear-gradient(
+            90deg,
+            #ffee33,
+            #ffcc00
+        );
+}
+
+.hpOrange{
+    background:
+        linear-gradient(
+            90deg,
+            #ff9933,
+            #ff6600
+        );
+}
+
+.hpRed{
+    background:
+        linear-gradient(
+            90deg,
+            #ff0033,
+            #aa0000
+        );
 }
 
 /* =========================
@@ -274,7 +323,7 @@ button{
     align-items:center;
 
     background:
-        rgba(0,0,0,0.72);
+        rgba(20,0,20,0.78);
 
     z-index:998;
 
@@ -1157,9 +1206,61 @@ function updateHpBar(){
     const percent =
         (hp / maxHp) * 100;
 
-    document.getElementById("hpBar")
-    .style.width =
+    const hpBar =
+        document.getElementById(
+            "hpBar"
+        );
+
+    hpBar.style.width =
         percent + "%";
+
+    /* 色リセット */
+
+    hpBar.classList.remove(
+        "hpGreen",
+        "hpYellowGreen",
+        "hpYellow",
+        "hpOrange",
+        "hpRed"
+    );
+
+    /* HP割合 */
+
+    if(percent >= 80){
+
+        hpBar.classList.add(
+            "hpGreen"
+        );
+
+    }
+    else if(percent >= 60){
+
+        hpBar.classList.add(
+            "hpYellowGreen"
+        );
+
+    }
+    else if(percent >= 40){
+
+        hpBar.classList.add(
+            "hpYellow"
+        );
+
+    }
+    else if(percent >= 20){
+
+        hpBar.classList.add(
+            "hpOrange"
+        );
+
+    }
+    else{
+
+        hpBar.classList.add(
+            "hpRed"
+        );
+
+    }
 
 }
 
