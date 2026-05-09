@@ -907,6 +907,8 @@ let currentPlayer = "先";
 
 let maxDamage = 0;
 
+let lastSkillName = "";
+
 /* =========================
    ワザ
 ========================= */
@@ -1065,8 +1067,11 @@ function changeBackgroundVideo(fileName){
    技カットイン
 ========================= */
 
-function showCutin(skillName, callback){
-
+function showCutin(
+    skillName,
+    level,
+    callback
+){
     const overlay =
         document.getElementById(
             "cutinOverlay"
@@ -1079,6 +1084,33 @@ function showCutin(skillName, callback){
 
     text.innerText =
         skillName;
+
+    /* ★ごとの背景 */
+
+    if(level <= 2){
+
+        overlay.style.background =
+            "rgba(20,0,20,0.78)";
+
+    }
+    else if(level <= 4){
+
+        overlay.style.background =
+            "rgba(60,0,80,0.82)";
+
+    }
+    else if(level === 5){
+
+        overlay.style.background =
+            "rgba(120,0,40,0.86)";
+
+    }
+    else{
+
+        overlay.style.background =
+            "rgba(180,0,0,0.9)";
+
+    }
 
     overlay.style.display =
         "flex";
@@ -1419,6 +1451,16 @@ function enemyAction(){
     roulette.style.color =
         "white";
 
+    roulette.style.textShadow =
+        `
+        0 0 10px white,
+        0 0 20px white,
+        0 0 40px white
+        `;
+
+    roulette.style.transform =
+        "scale(1)";
+
     let step = 0;
 
     function roll(){
@@ -1504,17 +1546,95 @@ function enemyAction(){
             roulette.innerText =
                 "★".repeat(finalStar);
 
-            /* ★6だけ赤く */
+            /* ★演出 */
 
-            if(finalStar === 6){
+            if(finalStar <= 2){
+
+                roulette.style.color =
+                    "white";
+
+                roulette.style.textShadow =
+                    `
+                    0 0 10px white,
+                    0 0 20px white
+                    `;
+
+                roulette.style.transform =
+                    "scale(1)";
+
+            }
+            else if(finalStar <= 4){
+
+                roulette.style.color =
+                    "#bb66ff";
+
+                roulette.style.textShadow =
+                    `
+                    0 0 10px #bb66ff,
+                    0 0 20px #bb66ff,
+                    0 0 40px #bb66ff
+                    `;
+
+                roulette.style.transform =
+                    "scale(1.08)";
+
+            }
+            else if(finalStar === 5){
 
                 roulette.style.color =
                     "#ff4444";
 
-            }else{
+                roulette.style.textShadow =
+                    `
+                    0 0 10px red,
+                    0 0 20px red,
+                    0 0 40px red,
+                    0 0 80px red
+                    `;
+
+                roulette.style.transform =
+                    "scale(1.15)";
+
+            }
+            else{
 
                 roulette.style.color =
-                    "white";
+                    "#ff0000";
+
+                roulette.style.textShadow =
+                    `
+                    0 0 20px red,
+                    0 0 40px red,
+                    0 0 80px red,
+                    0 0 120px red
+                    `;
+
+                roulette.style.transform =
+                    "scale(1.25)";
+
+                /* 赤フラッシュ */
+
+                document.getElementById(
+                    "rouletteOverlay"
+                ).animate(
+                    [
+                        {
+                            background:"rgba(255,0,0,0)"
+                        },
+                        {
+                            background:"rgba(255,0,0,0.45)"
+                        },
+                        {
+                            background:"rgba(255,0,0,0)"
+                        }
+
+                    ],
+
+                    {
+                        duration:400
+                    }
+
+                );
 
             }
 
@@ -1548,12 +1668,27 @@ function showSkill(level){
 
     const list = skills[level];
 
-    const skill =
-        list[
-            Math.floor(
-                Math.random()*list.length
-            )
-        ];
+    let skill;
+
+    do{
+
+        skill =
+            list[
+                Math.floor(
+                    Math.random()*list.length
+                )
+            ];
+
+    }while(
+
+        skill.name === lastSkillName
+        &&
+        list.length > 1
+
+    );
+
+    lastSkillName =
+        skill.name;
 
     if(skill.recovery){
 
@@ -1588,7 +1723,10 @@ function showSkill(level){
     ).innerText =
         skill.effect;
 
-    showCutin(skill.name, ()=>{
+    showCutin(
+        skill.name,
+        level,
+        ()=>{
 
         document.getElementById(
             "skillOverlay"
